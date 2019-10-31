@@ -6,6 +6,7 @@ import (
 
 	"github.com/wendellliu/good-search/pkg/mongo"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type Company struct {
@@ -28,7 +29,8 @@ func GetCompany(p *CompanyParams) *Company {
 	company := Company{}
 	var err error
 
-	cur := mongo.DB.Collection("companies").FindOne(
+	collection := mongo.DB.Collection("companies")
+	cur := collection.FindOne(
 		context.Background(),
 		p,
 	)
@@ -38,4 +40,28 @@ func GetCompany(p *CompanyParams) *Company {
 	}
 
 	return &company
+}
+
+func GetCompanies(p *CompanyParams, limit int64) *[]Company {
+	companies := []Company{}
+	var err error
+	options := options.Find()
+
+	// Limit by 10 documents only
+	options.SetLimit(limit)
+
+	cur, err := mongo.DB.Collection("companies").Find(
+		context.Background(),
+		p,
+		options,
+	)
+	if err != nil {
+		fmt.Println(err)
+	}
+	err = cur.All(context.Background(), &companies)
+	if err != nil {
+		fmt.Println(err)
+	}
+
+	return &companies
 }
