@@ -20,5 +20,7 @@ func main() {
 	config.Load()
 	mongo.Load()
 	fmt.Println("start")
-	fmt.Println(dto.GetCompany())
+
+	name := "復華廣告有限公司"
+	fmt.Printf("company, %+v", dto.GetCompany(&dto.CompanyParams{Name: &name}))
 }
