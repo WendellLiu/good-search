@@ -55,6 +55,7 @@ func GetCompanies(p *CompanyParams, limit int64) *[]Company {
 		p,
 		options,
 	)
+	defer cur.Close(context.Background())
 	if err != nil {
 		fmt.Println(err)
 	}
