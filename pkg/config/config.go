@@ -3,13 +3,19 @@ package config
 import "os"
 
 type BasicConfig struct {
-	foo string
+	MongoDBHost     string
+	MongoDBPort     string
+	MongoDBPassword string
+	MongoDBName     string
 }
 
 var Config BasicConfig
 
-func LoadConfig() {
+func Load() {
 	Config = BasicConfig{
-		foo: os.Getenv("FOO"),
+		MongoDBHost:     os.Getenv("MONGO_DB_HOST"),
+		MongoDBPort:     os.Getenv("MONGO_DB_PORT"),
+		MongoDBPassword: os.Getenv("MONGO_DB_PASSWORD"),
+		MongoDBName:     os.Getenv("MONGO_DB_NAME"),
 	}
 }
