@@ -1,15 +1,20 @@
 package main
 
 import (
-	"fmt"
-	"log"
+	"os"
 
 	"github.com/wendellliu/good-search/pkg/config"
 	"github.com/wendellliu/good-search/pkg/mongo"
 	"github.com/wendellliu/good-search/pkg/mongo/dto"
 
 	"github.com/joho/godotenv"
+	log "github.com/sirupsen/logrus"
 )
+
+func init() {
+	//log.SetFormatter(&log.JSONFormatter{})
+	log.SetOutput(os.Stdout)
+}
 
 func main() {
 	err := godotenv.Load()
@@ -19,11 +24,13 @@ func main() {
 
 	config.Load()
 	mongo.Load()
-	fmt.Println("start")
+	log.Info("start")
 
 	name := "富台機械開發建設有限公司"
-	fmt.Printf("company, %+v \n", dto.GetCompany(&dto.CompanyParams{Name: &name}))
+	company := dto.GetCompany(&dto.CompanyParams{Name: &name})
+	log.WithFields(log.Fields{"company": company}).Info("get result")
 
 	var capital int64 = 500000
-	fmt.Printf("companies, %+v \n", dto.GetCompanies(&dto.CompanyParams{Capital: &capital}, 10))
+	companies := dto.GetCompanies(&dto.CompanyParams{Capital: &capital}, 10)
+	log.WithFields(log.Fields{"companies": companies}).Info("get result")
 }
