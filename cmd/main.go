@@ -6,6 +6,7 @@ import (
 	"github.com/wendellliu/good-search/pkg/config"
 	"github.com/wendellliu/good-search/pkg/mongo"
 	"github.com/wendellliu/good-search/pkg/mongo/dto"
+	"go.mongodb.org/mongo-driver/bson/primitive"
 
 	"github.com/joho/godotenv"
 	log "github.com/sirupsen/logrus"
@@ -31,6 +32,12 @@ func main() {
 	log.WithFields(log.Fields{"company": company}).Info("get result")
 
 	var capital int64 = 500000
-	companies := dto.GetCompanies(&dto.CompanyParams{Capital: &capital}, 10)
+	head, _ := primitive.ObjectIDFromHex("577f9f9cd4c98d1f8749eecf")
+	options := dto.Options{
+		Limit: 10,
+		Head:  head,
+	}
+
+	companies := dto.GetCompanies(&dto.CompanyParams{Capital: &capital}, options)
 	log.WithFields(log.Fields{"companies": companies}).Info("get result")
 }

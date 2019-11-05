@@ -7,6 +7,8 @@ import (
 	"github.com/wendellliu/good-search/pkg/mongo"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo/options"
+
+	"gopkg.in/mgo.v2/bson"
 )
 
 type Company struct {
@@ -42,23 +44,40 @@ func GetCompany(p *CompanyParams) *Company {
 	return &company
 }
 
-func GetCompanies(p *CompanyParams, limit int64) *[]Company {
-	companies := []Company{}
-	var err error
-	options := options.Find()
+type Options struct {
+	Limit int64
+	Head  primitive.ObjectID
+}
 
-	// Limit by 10 documents only
-	options.SetLimit(limit)
+func GetCompanies(params *CompanyParams, opts Options) *[]Company {
+	companies := []Company{}
+	p := bson.M{}
+	var err error
+
+	options := options.Find()
+	if opts.Limit != 0 {
+		options.SetLimit(opts.Limit)
+	}
+
+	var defaultID primitive.ObjectID
+
+	if opts.Head != defaultID {
+		fmt.Println("hits")
+		fmt.Printf("head: %+v \n", opts.Head)
+		p["_id"] = bson.M{"$gt": opts.Head}
+	}
 
 	cur, err := mongo.DB.Collection("companies").Find(
 		context.Background(),
 		p,
 		options,
 	)
+
 	defer cur.Close(context.Background())
 	if err != nil {
 		fmt.Println(err)
 	}
+
 	err = cur.All(context.Background(), &companies)
 	if err != nil {
 		fmt.Println(err)

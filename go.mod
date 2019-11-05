@@ -5,6 +5,7 @@ go 1.12
 require (
 	github.com/go-stack/stack v1.8.0 // indirect
 	github.com/golang/snappy v0.0.1 // indirect
+	github.com/imdario/mergo v0.3.8
 	github.com/joho/godotenv v1.3.0
 	github.com/mongodb/mongo-go-driver v1.1.2
 	github.com/sirupsen/logrus v1.4.2
