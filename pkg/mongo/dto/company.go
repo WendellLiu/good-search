@@ -4,8 +4,9 @@ import (
 	"context"
 	"fmt"
 
-	"github.com/wendellliu/good-search/pkg/mongo"
+	"github.com/wendellliu/good-search/pkg/common"
 	"go.mongodb.org/mongo-driver/bson/primitive"
+	"go.mongodb.org/mongo-driver/mongo"
 	"go.mongodb.org/mongo-driver/mongo/options"
 
 	"gopkg.in/mgo.v2/bson"
@@ -27,11 +28,11 @@ type CompanyParams struct {
 	UID     *string             `bson:"id,omitempty" json:"id,omitempty"`
 }
 
-func GetCompany(p *CompanyParams) *Company {
+func GetCompany(db *mongo.Database, p *CompanyParams) *Company {
 	company := Company{}
 	var err error
 
-	collection := mongo.DB.Collection("companies")
+	collection := db.Collection("companies")
 	cur := collection.FindOne(
 		context.Background(),
 		p,
@@ -49,7 +50,7 @@ type Options struct {
 	Head  primitive.ObjectID
 }
 
-func GetCompanies(params *CompanyParams, opts Options) *[]Company {
+func GetCompanies(db *mongo.Database, params *CompanyParams, opts Options) *[]Company {
 	companies := []Company{}
 	p := bson.M{}
 	var err error
@@ -62,12 +63,13 @@ func GetCompanies(params *CompanyParams, opts Options) *[]Company {
 	var defaultID primitive.ObjectID
 
 	if opts.Head != defaultID {
-		fmt.Println("hits")
-		fmt.Printf("head: %+v \n", opts.Head)
 		p["_id"] = bson.M{"$gt": opts.Head}
 	}
 
-	cur, err := mongo.DB.Collection("companies").Find(
+	common.MergeStructToMap(params, p)
+	fmt.Printf("p: %+v \n", p)
+
+	cur, err := db.Collection("companies").Find(
 		context.Background(),
 		p,
 		options,

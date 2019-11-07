@@ -28,7 +28,7 @@ func main() {
 	log.Info("start")
 
 	name := "富台機械開發建設有限公司"
-	company := dto.GetCompany(&dto.CompanyParams{Name: &name})
+	company := dto.GetCompany(mongo.DB, &dto.CompanyParams{Name: &name})
 	log.WithFields(log.Fields{"company": company}).Info("get result")
 
 	var capital int64 = 500000
@@ -38,6 +38,6 @@ func main() {
 		Head:  head,
 	}
 
-	companies := dto.GetCompanies(&dto.CompanyParams{Capital: &capital}, options)
+	companies := dto.GetCompanies(mongo.DB, &dto.CompanyParams{Capital: &capital}, options)
 	log.WithFields(log.Fields{"companies": companies}).Info("get result")
 }
