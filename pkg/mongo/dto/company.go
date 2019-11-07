@@ -2,8 +2,8 @@ package dto
 
 import (
 	"context"
-	"fmt"
 
+	"github.com/wendellliu/good-search/pkg/logger"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
 	"go.mongodb.org/mongo-driver/mongo"
@@ -11,7 +11,8 @@ import (
 )
 
 const (
-	defaultLimit = 100
+	defaultLimit   = 100
+	collectionName = "companies"
 )
 
 type Company struct {
@@ -32,14 +33,14 @@ func GetCompany(db *mongo.Database, p *CompanyParams) *Company {
 	company := Company{}
 	var err error
 
-	collection := db.Collection("companies")
+	collection := db.Collection(collectionName)
 	cur := collection.FindOne(
 		context.Background(),
 		p,
 	)
 	err = cur.Decode(&company)
 	if err != nil {
-		fmt.Println(err)
+		logger.Logger.Error(err)
 	}
 
 	return &company
@@ -60,8 +61,8 @@ func GetCompanies(db *mongo.Database, params *CompanyParams, opts Options) []Com
 		options.SetLimit(opts.Limit)
 	} else {
 		options.SetLimit(defaultLimit)
-	}
 
+	}
 	var defaultID primitive.ObjectID
 
 	if opts.CursorID != defaultID {
@@ -79,22 +80,20 @@ func GetCompanies(db *mongo.Database, params *CompanyParams, opts Options) []Com
 	if params.Name != nil {
 		query["name"] = params.Name
 	}
-	fmt.Printf("query: %+v \n", query)
-	fmt.Printf("params capital %d \n", params.Capital)
-	fmt.Printf("capital %d \n", query["capital"])
-	cur, err := db.Collection("companies").Find(
+
+	cur, err := db.Collection(collectionName).Find(
 		context.Background(),
 		query,
 		options,
 	)
 	defer cur.Close(context.Background())
 	if err != nil {
-		fmt.Println(err)
+		logger.Logger.Error(err)
 	}
 
 	err = cur.All(context.Background(), &companies)
 	if err != nil {
-		fmt.Println(err)
+		logger.Logger.Error(err)
 	}
 
 	return companies
