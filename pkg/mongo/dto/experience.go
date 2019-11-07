@@ -2,6 +2,7 @@ package dto
 
 import (
 	"context"
+	"time"
 
 	"github.com/wendellliu/good-search/pkg/logger"
 	"go.mongodb.org/mongo-driver/bson"
@@ -10,12 +11,82 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
+const (
+	SalaryTypeYear  = "year"
+	SalaryTypeMonth = "month"
+	SalaryTypeDay   = "day"
+	SalaryTypeHour  = "hour"
+)
+
+type ExpCompany struct {
+	Name string `bson:"name" json:"name"`
+}
+
+type ExpSection struct {
+	ID       int64  `bson:"id" json:"id"`
+	Subtitle string `bson:"subtitle" json:"subtitle"`
+	Content  string `bson:"content" json:"content"`
+}
+
+type InterviewTime struct {
+	Year  string `bson:"year" json:"year"`
+	Month string `bson:"month" json:"month"`
+}
+
+type InterviewQA struct {
+	Question string `bson:"question" json:"question"`
+	Answer   string `bson:"answer" json:"answer"`
+}
+
+type Salary struct {
+	Type   string `bson:"type" json:"type"`
+	Amount int64  `bson:"amount" json:"amount"`
+}
+
+type Archive struct {
+	IsArchived bool   `bson:"is_archived" json:"is_archived"`
+	Reason     string `bson:"reason" json:"reason"`
+}
+
 type Experience struct {
-	ID      primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty"`
-	Type    string             `bson:"type" json:"type"`
-	Capital int                `bson:"capital" json:"capital"`
-	Name    string             `bson:"name" json:"name"`
-	UID     string             `bson:"id" json:"id"`
+	ID          primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty"`
+	Type        string             `bson:"type" json:"type"`
+	AuthorID    primitive.ObjectID `bson:"author_id" json:"author_id"`
+	Compnay     ExpCompany         `bson:"company" json:"company"`
+	LikeCount   int64              `bson:"like_count" json:"like_count"`
+	ReplyCount  int64              `bson:"reply_count" json:"reply_count"`
+	CreatedAt   time.Time          `bson:"created_at" json:"created_at"`
+	Region      string             `bson:"region" json:"region"`
+	JobTitle    string             `bson:"job_title" json:"job_title"`
+	Title       string             `bson:"title" json:"title"`
+	Education   string             `bson:"education" json:"education"`
+	Status      string             `bson:"status" json:"status"`
+	ReportCount int64              `bson:"report_count" json:"report_count"`
+	Sections    []ExpSection       `bson:"sections" json:"sections"`
+	Salary      Salary             `bson:"salary" json:"salary"`
+	Archive     Archive            `bson:"archive" json:"archive"`
+	UID         string             `bson:"id" json:"id"`
+}
+
+type InterviewExperience struct {
+	Experience
+	OverallRating               int64         `bson:"overall_rating" json:"overall_rating"`
+	InterviewResult             string        `bson:"interview_result" json:"interview_result"`
+	InterviewTime               InterviewTime `bson:"interview_time" json:"interview"`
+	InterviewQAs                []InterviewQA `bson:"interview_qas" json:"interview_qas"`
+	InterviewSensitiveQuestions []string      `bson:"interview_sensitive_questions" json:"interview_sensitive_questions"`
+}
+
+type YearMonth struct {
+	Year  int64 `bson:"year" json:"year"`
+	Month int64 `bson:"month" json:"month"`
+}
+
+type WorkExperience struct {
+	Experience
+	WeekWorkTime      int64     `bson:"week_work_time" json:"week_work_time"`
+	RecommendToOthers string    `bson:"recommend_to_others" json:"recommend_to_others"`
+	DataTime          YearMonth `bson:"data_time" json:"data_time"`
 }
 
 type ExperienceParams struct {
@@ -24,27 +95,9 @@ type ExperienceParams struct {
 	Name    *string `bson:"name,omitempty" json:"name,omitempty"`
 }
 
-func GetExperience(db *mongo.Database, p *CompanyParams) *Company {
+func GetExperiencs(db *mongo.Database, params *ExperienceParams, opts Options) []Experience {
 	collectionName := "experiences"
-	company := Company{}
-	var err error
-
-	collection := db.Collection(collectionName)
-	cur := collection.FindOne(
-		context.Background(),
-		p,
-	)
-	err = cur.Decode(&company)
-	if err != nil {
-		logger.Logger.Error(err)
-	}
-
-	return &company
-}
-
-func GetExperiencs(db *mongo.Database, params *CompanyParams, opts Options) []Company {
-	collectionName := "experiences"
-	companies := []Company{}
+	results := []Experience{}
 	query := bson.M{}
 	var err error
 
@@ -83,10 +136,10 @@ func GetExperiencs(db *mongo.Database, params *CompanyParams, opts Options) []Co
 		logger.Logger.Error(err)
 	}
 
-	err = cur.All(context.Background(), &companies)
+	err = cur.All(context.Background(), &results)
 	if err != nil {
 		logger.Logger.Error(err)
 	}
 
-	return companies
+	return results
 }
