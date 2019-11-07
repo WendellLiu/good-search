@@ -31,13 +31,21 @@ func main() {
 	company := dto.GetCompany(mongo.DB, &dto.CompanyParams{Name: &name})
 	log.WithFields(log.Fields{"company": company}).Info("get result")
 
-	var capital int64 = 500000
-	head, _ := primitive.ObjectIDFromHex("577f9f9cd4c98d1f8749eecf")
+	var capital int = 500000
+	cursorID, _ := primitive.ObjectIDFromHex("577f9f9cd4c98d1f8749efbd")
 	options := dto.Options{
-		Limit: 10,
-		Head:  head,
+		Limit:    5,
+		CursorID: cursorID,
 	}
 
 	companies := dto.GetCompanies(mongo.DB, &dto.CompanyParams{Capital: &capital}, options)
-	log.WithFields(log.Fields{"companies": companies}).Info("get result")
+	for i, company := range companies {
+
+		log.WithFields(
+			log.Fields{"index": i},
+		).WithFields(
+			log.Fields{"companies": company},
+		).Info("get result")
+
+	}
 }
