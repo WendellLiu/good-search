@@ -10,7 +10,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
-type Company struct {
+type Experience struct {
 	ID      primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty"`
 	Type    string             `bson:"type" json:"type"`
 	Capital int                `bson:"capital" json:"capital"`
@@ -18,15 +18,14 @@ type Company struct {
 	UID     string             `bson:"id" json:"id"`
 }
 
-type CompanyParams struct {
+type ExperienceParams struct {
 	Type    *string `bson:"type,omitempty" json:"type,omitempty"`
 	Capital *int    `bson:"capital,omitempty" json:"capital,omitempty"`
 	Name    *string `bson:"name,omitempty" json:"name,omitempty"`
 }
 
-func GetCompany(db *mongo.Database, p *CompanyParams) *Company {
-	collectionName := "companies"
-
+func GetExperience(db *mongo.Database, p *CompanyParams) *Company {
+	collectionName := "experiences"
 	company := Company{}
 	var err error
 
@@ -43,8 +42,8 @@ func GetCompany(db *mongo.Database, p *CompanyParams) *Company {
 	return &company
 }
 
-func GetCompanies(db *mongo.Database, params *CompanyParams, opts Options) []Company {
-	collectionName := "companies"
+func GetExperiencs(db *mongo.Database, params *CompanyParams, opts Options) []Company {
+	collectionName := "experiences"
 	companies := []Company{}
 	query := bson.M{}
 	var err error
