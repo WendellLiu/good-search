@@ -18,22 +18,24 @@ type Company struct {
 	UID     string             `bson:"id" json:"id"`
 }
 
-type CompanyParams struct {
+type CompaniesParams struct {
 	Type    *string `bson:"type,omitempty" json:"type,omitempty"`
 	Capital *int    `bson:"capital,omitempty" json:"capital,omitempty"`
 	Name    *string `bson:"name,omitempty" json:"name,omitempty"`
 }
 
-func GetCompany(db *mongo.Database, p *CompanyParams) *Company {
+func GetCompany(db *mongo.Database, id *string) *Company {
 	collectionName := "companies"
 
 	company := Company{}
 	var err error
 
+	ID, err := primitive.ObjectIDFromHex(*id)
+
 	collection := db.Collection(collectionName)
 	cur := collection.FindOne(
 		context.Background(),
-		p,
+		bson.M{"_id": ID},
 	)
 	err = cur.Decode(&company)
 	if err != nil {
@@ -43,7 +45,7 @@ func GetCompany(db *mongo.Database, p *CompanyParams) *Company {
 	return &company
 }
 
-func GetCompanies(db *mongo.Database, params *CompanyParams, opts Options) []Company {
+func GetCompanies(db *mongo.Database, params *CompaniesParams, opts Options) []Company {
 	collectionName := "companies"
 	companies := []Company{}
 	query := bson.M{}

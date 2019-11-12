@@ -23,8 +23,8 @@ func main() {
 
 	logger.Logger.Info("start")
 
-	name := "富台機械開發建設有限公司"
-	company := dto.GetCompany(mongo.DB, &dto.CompanyParams{Name: &name})
+	companyID := "577f9f9cd4c98d1f8749eecf"
+	company := dto.GetCompany(mongo.DB, &companyID)
 	logger.Logger.WithFields(logrus.Fields{"company": company}).Info("get result")
 
 	var capital int = 500000
@@ -34,7 +34,7 @@ func main() {
 		CursorID: cursorID,
 	}
 
-	companies := dto.GetCompanies(mongo.DB, &dto.CompanyParams{Capital: &capital}, options)
+	companies := dto.GetCompanies(mongo.DB, &dto.CompaniesParams{Capital: &capital}, options)
 	for i, company := range companies {
 
 		logger.Logger.WithFields(
