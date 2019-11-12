@@ -16,6 +16,9 @@ const (
 	SalaryTypeMonth = "month"
 	SalaryTypeDay   = "day"
 	SalaryTypeHour  = "hour"
+
+	InterviewExperienceType = "interview"
+	WorkExperienceType      = "work"
 )
 
 type ExpCompany struct {
@@ -89,13 +92,34 @@ type WorkExperience struct {
 	DataTime          YearMonth `bson:"data_time" json:"data_time"`
 }
 
-type ExperienceParams struct {
-	Type    *string `bson:"type,omitempty" json:"type,omitempty"`
-	Capital *int    `bson:"capital,omitempty" json:"capital,omitempty"`
-	Name    *string `bson:"name,omitempty" json:"name,omitempty"`
+type ExperiencesParams struct {
+	Type *string `bson:"type,omitempty" json:"type,omitempty"`
 }
 
-func GetExperiencs(db *mongo.Database, params *ExperienceParams, opts Options) []Experience {
+func GetExperience(db *mongo.Database, id *string) interface{} {
+	collectionName := "companies"
+
+	var err error
+	var result interface{}
+
+	ID, err := primitive.ObjectIDFromHex(*id)
+
+	collection := db.Collection(collectionName)
+
+	cur := collection.FindOne(
+		context.Background(),
+		bson.M{"_id": ID},
+	)
+
+	err = cur.Decode(&result)
+	if err != nil {
+		logger.Logger.Error(err)
+	}
+
+	return &result
+}
+
+func GetExperiences(db *mongo.Database, params *ExperiencesParams, opts Options) []Experience {
 	collectionName := "experiences"
 	results := []Experience{}
 	query := bson.M{}
@@ -118,12 +142,6 @@ func GetExperiencs(db *mongo.Database, params *ExperienceParams, opts Options) [
 
 	if params.Type != nil {
 		query["type"] = params.Type
-	}
-	if params.Capital != nil {
-		query["capital"] = params.Capital
-	}
-	if params.Name != nil {
-		query["name"] = params.Name
 	}
 
 	cur, err := db.Collection(collectionName).Find(
