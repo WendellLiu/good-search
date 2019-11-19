@@ -2,7 +2,9 @@ package dto
 
 import (
 	"context"
+	"fmt"
 
+	"github.com/wendellliu/good-search/pkg/common/dbAdapter"
 	"github.com/wendellliu/good-search/pkg/logger"
 	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -24,25 +26,29 @@ type CompaniesParams struct {
 	Name    *string `bson:"name,omitempty" json:"name,omitempty"`
 }
 
-func GetCompany(db *mongo.Database, id *string) *Company {
+func GetCompany(db dbAdapter.Database, id string) (*Company, error) {
 	collectionName := "companies"
 
-	company := Company{}
 	var err error
 
-	ID, err := primitive.ObjectIDFromHex(*id)
+	collection := db.UseTable(collectionName)
 
-	collection := db.Collection(collectionName)
-	cur := collection.FindOne(
+	result, err := collection.QueryOne(
 		context.Background(),
-		bson.M{"_id": ID},
+		id,
 	)
-	err = cur.Decode(&company)
-	if err != nil {
-		logger.Logger.Error(err)
+
+	fmt.Printf("result: %+v \n", result)
+
+	value, ok := result.(Company)
+	fmt.Printf("result type = %T \n", result)
+	fmt.Printf("value type = %T \n", value)
+	if !ok {
+		err = fmt.Errorf("type error: %T", value)
 	}
 
-	return &company
+	return &value, err
+
 }
 
 func GetCompanies(db *mongo.Database, params *CompaniesParams, opts Options) []Company {
