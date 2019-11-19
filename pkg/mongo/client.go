@@ -38,16 +38,15 @@ func (db *MongoDB) UseTable(collectionName string) dbAdapter.Table {
 	return &MongoCollection{collection: db.connection.Collection(collectionName)}
 }
 
-func (collection *MongoCollection) QueryOne(ctx context.Context, id string) (interface{}, error) {
-	var result interface{}
+func (collection *MongoCollection) QueryOne(ctx context.Context, id string, result interface{}) error {
 	var err error
 	ID, err := primitive.ObjectIDFromHex(id)
 	cur := collection.collection.FindOne(
 		ctx,
 		bson.M{"_id": ID},
 	)
-	err = cur.Decode(&result)
-	return result, err
+	err = cur.Decode(result)
+	return err
 }
 
 //func Load() {

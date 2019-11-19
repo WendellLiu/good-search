@@ -10,7 +10,7 @@ type Options struct {
 }
 
 type Table interface {
-	QueryOne(ctx context.Context, id string) (interface{}, error)
+	QueryOne(ctx context.Context, id string, result interface{}) error
 	//QueryPagination(params interface{}, opts Options) ([]Result, error)
 }
 

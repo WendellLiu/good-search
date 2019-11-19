@@ -2,7 +2,6 @@ package dto
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/wendellliu/good-search/pkg/common/dbAdapter"
 	"github.com/wendellliu/good-search/pkg/logger"
@@ -28,26 +27,19 @@ type CompaniesParams struct {
 
 func GetCompany(db dbAdapter.Database, id string) (*Company, error) {
 	collectionName := "companies"
+	result := Company{}
 
 	var err error
 
 	collection := db.UseTable(collectionName)
 
-	result, err := collection.QueryOne(
+	err = collection.QueryOne(
 		context.Background(),
 		id,
+		&result,
 	)
 
-	fmt.Printf("result: %+v \n", result)
-
-	value, ok := result.(Company)
-	fmt.Printf("result type = %T \n", result)
-	fmt.Printf("value type = %T \n", value)
-	if !ok {
-		err = fmt.Errorf("type error: %T", value)
-	}
-
-	return &value, err
+	return &result, err
 
 }
 
