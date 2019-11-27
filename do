@@ -2,14 +2,16 @@
 SCRIPT_NAME="do"
 
 if [ $# -ne 0  ]; then
-        if [ "${1}" == "gen-pb" ]; then
+        flag="${1}"
+        if [ "$flag" == "gen-pb" ]; then
                 (set -x; protoc -I pkg/pb/ pkg/pb/*.proto --go_out=plugins=grpc:pkg/pb)
-
-        elif [ "${1}" == "dummy" ]; then
+        elif [ "$flag" == "run" ]; then
+                (set -x; go run cmd/main.go)
+        elif [ "$flag" == "dummy" ]; then
                 echo "dummy"
         fi
 else
-    echo "Usage: \"./${SCRIPT_NAME}.sh gen-pb\"";
+    echo "Usage: \"./${SCRIPT_NAME} gen-pb\"";
     exit 1
 fi
 
