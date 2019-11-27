@@ -1,14 +1,9 @@
 package dto
 
 import (
-	"context"
 	"time"
 
-	"github.com/wendellliu/good-search/pkg/logger"
-	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 const (
@@ -96,68 +91,68 @@ type ExperiencesParams struct {
 	Type *string `bson:"type,omitempty" json:"type,omitempty"`
 }
 
-func GetExperience(db *mongo.Database, id *string) interface{} {
-	collectionName := "companies"
+//func GetExperience(db *mongo.Database, id *string) interface{} {
+//collectionName := "companies"
 
-	var err error
-	var result interface{}
+//var err error
+//var result interface{}
 
-	ID, err := primitive.ObjectIDFromHex(*id)
+//ID, err := primitive.ObjectIDFromHex(*id)
 
-	collection := db.Collection(collectionName)
+//collection := db.Collection(collectionName)
 
-	cur := collection.FindOne(
-		context.Background(),
-		bson.M{"_id": ID},
-	)
+//cur := collection.FindOne(
+//context.Background(),
+//bson.M{"_id": ID},
+//)
 
-	err = cur.Decode(&result)
-	if err != nil {
-		logger.Logger.Error(err)
-	}
+//err = cur.Decode(&result)
+//if err != nil {
+//logger.Logger.Error(err)
+//}
 
-	return &result
-}
+//return &result
+//}
 
-func GetExperiences(db *mongo.Database, params *ExperiencesParams, opts Options) []Experience {
-	collectionName := "experiences"
-	results := []Experience{}
-	query := bson.M{}
-	var err error
+//func GetExperiences(db *mongo.Database, params *ExperiencesParams, opts Options) []Experience {
+//collectionName := "experiences"
+//results := []Experience{}
+//query := bson.M{}
+//var err error
 
-	options := options.Find()
-	if opts.Limit != 0 {
-		options.SetLimit(opts.Limit)
-	} else {
-		options.SetLimit(defaultLimit)
+//options := options.Find()
+//if opts.Limit != 0 {
+//options.SetLimit(opts.Limit)
+//} else {
+//options.SetLimit(defaultLimit)
 
-	}
-	var defaultID primitive.ObjectID
+//}
+//var defaultID primitive.ObjectID
 
-	if opts.CursorID != defaultID {
-		query["_id"] = bson.M{
-			"$gt": opts.CursorID,
-		}
-	}
+//if opts.CursorID != defaultID {
+//query["_id"] = bson.M{
+//"$gt": opts.CursorID,
+//}
+//}
 
-	if params.Type != nil {
-		query["type"] = params.Type
-	}
+//if params.Type != nil {
+//query["type"] = params.Type
+//}
 
-	cur, err := db.Collection(collectionName).Find(
-		context.Background(),
-		query,
-		options,
-	)
-	defer cur.Close(context.Background())
-	if err != nil {
-		logger.Logger.Error(err)
-	}
+//cur, err := db.Collection(collectionName).Find(
+//context.Background(),
+//query,
+//options,
+//)
+//defer cur.Close(context.Background())
+//if err != nil {
+//logger.Logger.Error(err)
+//}
 
-	err = cur.All(context.Background(), &results)
-	if err != nil {
-		logger.Logger.Error(err)
-	}
+//err = cur.All(context.Background(), &results)
+//if err != nil {
+//logger.Logger.Error(err)
+//}
 
-	return results
-}
+//return results
+//}

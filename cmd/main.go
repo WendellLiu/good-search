@@ -1,7 +1,10 @@
 package main
 
 import (
+	"context"
+
 	"github.com/sirupsen/logrus"
+	"github.com/wendellliu/good-search/pkg/common/dbAdapter"
 	"github.com/wendellliu/good-search/pkg/config"
 	"github.com/wendellliu/good-search/pkg/dto"
 	"github.com/wendellliu/good-search/pkg/logger"
@@ -24,30 +27,35 @@ func main() {
 	logger.Logger.Info("start")
 
 	companyID := "577f9f9cd4c98d1f8749eecf"
-	company, err := dto.GetCompany(db, companyID)
+	company, err := dto.GetCompany(context.Background(), db, companyID)
 
 	if err != nil {
 		logger.Logger.Error(err)
 	}
 	logger.Logger.WithFields(logrus.Fields{"company": company}).Info("get result")
 
+	cursorID := "577f9f9cd4c98d1f8749efbd"
+	options := dbAdapter.Options{
+		Limit:    5,
+		CursorID: cursorID,
+	}
 	//var capital int = 500000
-	//cursorID, _ := primitive.ObjectIDFromHex("577f9f9cd4c98d1f8749efbd")
-	//options := dto.Options{
-	//Limit:    5,
-	//CursorID: cursorID,
-	//}
+	//params := &dto.CompaniesParams{Capital: &capital}
+	params := &dto.CompaniesParams{}
 
-	//companies := dto.GetCompanies(mongo.DB, &dto.CompaniesParams{Capital: &capital}, options)
-	//for i, company := range companies {
+	companies, err := dto.GetCompanies(context.Background(), db, params, options)
+	if err != nil {
+		logger.Logger.Error(err)
+	}
+	for i, company := range companies {
 
-	//logger.Logger.WithFields(
-	//logrus.Fields{"index": i},
-	//).WithFields(
-	//logrus.Fields{"companies": company},
-	//).Info("get result")
+		logger.Logger.WithFields(
+			logrus.Fields{"index": i},
+		).WithFields(
+			logrus.Fields{"companies": company},
+		).Info("get result")
 
-	//}
+	}
 
 	//experienceID := "598075e1185cc200046fde29"
 	//experience := dto.GetExperience(mongo.DB, &experienceID)

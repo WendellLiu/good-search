@@ -6,12 +6,12 @@ import (
 
 type Options struct {
 	Limit    int64
-	CursorID interface{}
+	CursorID string
 }
 
 type Table interface {
 	QueryOne(ctx context.Context, id string, result interface{}) error
-	//QueryPagination(params interface{}, opts Options) ([]Result, error)
+	QueryPagination(ctx context.Context, params map[string]interface{}, opts Options, results interface{}) error
 }
 
 type Database interface {

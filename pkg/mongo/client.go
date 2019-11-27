@@ -13,6 +13,10 @@ import (
 	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
+const (
+	defaultLimit = 10
+)
+
 type MongoDB struct {
 	connection *mongo.Database
 }
@@ -32,8 +36,8 @@ func New() (*MongoDB, error) {
 	err = client.Ping(context.Background(), nil)
 	conn := client.Database(config.Config.MongoDBName)
 	return &MongoDB{connection: conn}, err
-}
 
+}
 func (db *MongoDB) UseTable(collectionName string) dbAdapter.Table {
 	return &MongoCollection{collection: db.connection.Collection(collectionName)}
 }
@@ -49,16 +53,45 @@ func (collection *MongoCollection) QueryOne(ctx context.Context, id string, resu
 	return err
 }
 
-//func Load() {
-//var err error
-//client, err = mongo.Connect(context.Background(), options.Client().ApplyURI(mongoURI))
-//if err != nil {
-//fmt.Println(err)
-//}
-//err = client.Ping(context.Background(), nil)
-//if err != nil {
-//fmt.Println(err)
-//}
+func (collection *MongoCollection) QueryPagination(
+	ctx context.Context,
+	params map[string]interface{},
+	opts dbAdapter.Options,
+	results interface{},
+) error {
+	var err error
+	query := bson.M{}
 
-//DB = client.Database(config.Config.MongoDBName)
-//}
+	options := options.Find()
+	if opts.Limit != 0 {
+		options.SetLimit(opts.Limit)
+	} else {
+		options.SetLimit(defaultLimit)
+
+	}
+	var defaultID primitive.ObjectID
+	cursorID, err := primitive.ObjectIDFromHex(opts.CursorID)
+
+	if cursorID != defaultID {
+		query["_id"] = bson.M{
+			"$gt": cursorID,
+		}
+	}
+
+	for k, v := range params {
+		if v != nil {
+			query[k] = v
+		}
+	}
+
+	cur, err := collection.collection.Find(
+		context.Background(),
+		query,
+		options,
+	)
+	defer cur.Close(context.Background())
+
+	err = cur.All(context.Background(), results)
+
+	return err
+}

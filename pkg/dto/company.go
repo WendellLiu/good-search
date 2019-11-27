@@ -5,10 +5,7 @@ import (
 
 	"github.com/wendellliu/good-search/pkg/common/dbAdapter"
 	"github.com/wendellliu/good-search/pkg/logger"
-	"go.mongodb.org/mongo-driver/bson"
 	"go.mongodb.org/mongo-driver/bson/primitive"
-	"go.mongodb.org/mongo-driver/mongo"
-	"go.mongodb.org/mongo-driver/mongo/options"
 )
 
 type Company struct {
@@ -25,10 +22,9 @@ type CompaniesParams struct {
 	Name    *string `bson:"name,omitempty" json:"name,omitempty"`
 }
 
-func GetCompany(db dbAdapter.Database, id string) (*Company, error) {
+func GetCompany(ctx context.Context, db dbAdapter.Database, id string) (Company, error) {
 	collectionName := "companies"
 	result := Company{}
-
 	var err error
 
 	collection := db.UseTable(collectionName)
@@ -39,31 +35,24 @@ func GetCompany(db dbAdapter.Database, id string) (*Company, error) {
 		&result,
 	)
 
-	return &result, err
+	if err != nil {
+		logger.Logger.Error(err)
+	}
+
+	return result, err
 
 }
 
-func GetCompanies(db *mongo.Database, params *CompaniesParams, opts Options) []Company {
+func GetCompanies(
+	ctx context.Context,
+	db dbAdapter.Database,
+	params *CompaniesParams,
+	opts dbAdapter.Options,
+) (companies []Company, err error) {
 	collectionName := "companies"
-	companies := []Company{}
-	query := bson.M{}
-	var err error
+	results := []Company{}
 
-	options := options.Find()
-	if opts.Limit != 0 {
-		options.SetLimit(opts.Limit)
-	} else {
-		options.SetLimit(defaultLimit)
-
-	}
-	var defaultID primitive.ObjectID
-
-	if opts.CursorID != defaultID {
-		query["_id"] = bson.M{
-			"$gt": opts.CursorID,
-		}
-	}
-
+	query := make(map[string]interface{})
 	if params.Type != nil {
 		query["type"] = params.Type
 	}
@@ -73,21 +62,17 @@ func GetCompanies(db *mongo.Database, params *CompaniesParams, opts Options) []C
 	if params.Name != nil {
 		query["name"] = params.Name
 	}
-
-	cur, err := db.Collection(collectionName).Find(
-		context.Background(),
+	collection := db.UseTable(collectionName)
+	err = collection.QueryPagination(
+		ctx,
 		query,
-		options,
+		opts,
+		&results,
 	)
-	defer cur.Close(context.Background())
+
 	if err != nil {
 		logger.Logger.Error(err)
 	}
 
-	err = cur.All(context.Background(), &companies)
-	if err != nil {
-		logger.Logger.Error(err)
-	}
-
-	return companies
+	return results, err
 }
