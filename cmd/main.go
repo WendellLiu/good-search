@@ -39,9 +39,8 @@ func main() {
 		Limit:    5,
 		CursorID: cursorID,
 	}
-	//var capital int = 500000
-	//params := &dto.CompaniesParams{Capital: &capital}
-	params := &dto.CompaniesParams{}
+	var capital int = 500000
+	params := &dto.CompaniesParams{Capital: &capital}
 
 	companies, err := dto.GetCompanies(context.Background(), db, params, options)
 	if err != nil {
@@ -57,25 +56,29 @@ func main() {
 
 	}
 
-	//experienceID := "598075e1185cc200046fde29"
-	//experience := dto.GetExperience(mongo.DB, &experienceID)
-	//logger.Logger.WithFields(logrus.Fields{"experience": experience}).Info("get result")
+	experienceID := "598075e1185cc200046fde29"
+	experience, err := dto.GetExperience(context.Background(), db, experienceID)
 
-	//_type := "work"
-	//cursorID, _ = primitive.ObjectIDFromHex("5980a2f5185cc200046fe759")
-	//options = dto.Options{
-	//Limit:    5,
-	//CursorID: cursorID,
-	//}
+	if err != nil {
+		logger.Logger.Error(err)
+	}
+	logger.Logger.WithFields(logrus.Fields{"experience": experience}).Info("get result")
 
-	//experiences := dto.GetExperiences(mongo.DB, &dto.ExperiencesParams{Type: &_type}, options)
-	//for i, experience := range experiences {
+	_type := "work"
+	cursorID = "598075e1185cc200046fde29"
+	options = dbAdapter.Options{
+		Limit:    5,
+		CursorID: cursorID,
+	}
 
-	//logger.Logger.WithFields(
-	//logrus.Fields{"index": i},
-	//).WithFields(
-	//logrus.Fields{"experiences": experience},
-	//).Info("get result")
+	experiences, err := dto.GetExperiences(context.Background(), db, &dto.ExperiencesParams{Type: &_type}, options)
+	for i, experience := range experiences {
 
-	//}
+		logger.Logger.WithFields(
+			logrus.Fields{"index": i},
+		).WithFields(
+			logrus.Fields{"experiences": experience},
+		).Info("get result")
+
+	}
 }
