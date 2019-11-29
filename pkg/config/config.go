@@ -7,6 +7,7 @@ type BasicConfig struct {
 	MongoDBPort     string
 	MongoDBPassword string
 	MongoDBName     string
+	GRPCPort        string
 }
 
 var Config BasicConfig
@@ -17,5 +18,6 @@ func Load() {
 		MongoDBPort:     os.Getenv("MONGO_DB_PORT"),
 		MongoDBPassword: os.Getenv("MONGO_DB_PASSWORD"),
 		MongoDBName:     os.Getenv("MONGO_DB_NAME"),
+		GRPCPort:        os.Getenv("GRPC_PORT"),
 	}
 }

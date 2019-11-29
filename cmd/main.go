@@ -9,6 +9,7 @@ import (
 	"github.com/wendellliu/good-search/pkg/dto"
 	"github.com/wendellliu/good-search/pkg/logger"
 	"github.com/wendellliu/good-search/pkg/mongo"
+	"github.com/wendellliu/good-search/pkg/server"
 
 	"github.com/joho/godotenv"
 )
@@ -23,6 +24,7 @@ func main() {
 	config.Load()
 	db, err := mongo.New()
 	logger.Load()
+	server.Server()
 
 	logger.Logger.Info("start")
 
