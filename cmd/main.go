@@ -22,9 +22,10 @@ func main() {
 	}
 
 	config.Load()
-	db, err := mongo.New()
 	logger.Load()
 	server.Server()
+
+	db, err := mongo.New()
 
 	logger.Logger.Info("start")
 
