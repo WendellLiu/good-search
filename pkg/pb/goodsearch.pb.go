@@ -24,89 +24,95 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
-// The request message containing the user's name.
-type HelloRequest struct {
-	Name                 string   `protobuf:"bytes,1,opt,name=name,proto3" json:"name,omitempty"`
+type GetExperienceReq struct {
+	Id                   string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *HelloRequest) Reset()         { *m = HelloRequest{} }
-func (m *HelloRequest) String() string { return proto.CompactTextString(m) }
-func (*HelloRequest) ProtoMessage()    {}
-func (*HelloRequest) Descriptor() ([]byte, []int) {
+func (m *GetExperienceReq) Reset()         { *m = GetExperienceReq{} }
+func (m *GetExperienceReq) String() string { return proto.CompactTextString(m) }
+func (*GetExperienceReq) ProtoMessage()    {}
+func (*GetExperienceReq) Descriptor() ([]byte, []int) {
 	return fileDescriptor_a44eebf31dd75a2c, []int{0}
 }
 
-func (m *HelloRequest) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_HelloRequest.Unmarshal(m, b)
+func (m *GetExperienceReq) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetExperienceReq.Unmarshal(m, b)
 }
-func (m *HelloRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_HelloRequest.Marshal(b, m, deterministic)
+func (m *GetExperienceReq) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetExperienceReq.Marshal(b, m, deterministic)
 }
-func (m *HelloRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_HelloRequest.Merge(m, src)
+func (m *GetExperienceReq) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetExperienceReq.Merge(m, src)
 }
-func (m *HelloRequest) XXX_Size() int {
-	return xxx_messageInfo_HelloRequest.Size(m)
+func (m *GetExperienceReq) XXX_Size() int {
+	return xxx_messageInfo_GetExperienceReq.Size(m)
 }
-func (m *HelloRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_HelloRequest.DiscardUnknown(m)
+func (m *GetExperienceReq) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetExperienceReq.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_HelloRequest proto.InternalMessageInfo
+var xxx_messageInfo_GetExperienceReq proto.InternalMessageInfo
 
-func (m *HelloRequest) GetName() string {
+func (m *GetExperienceReq) GetId() string {
 	if m != nil {
-		return m.Name
+		return m.Id
 	}
 	return ""
 }
 
-// The response message containing the greetings
-type HelloReply struct {
-	Message              string   `protobuf:"bytes,1,opt,name=message,proto3" json:"message,omitempty"`
+type GetExperienceResp struct {
+	Id                   string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	Type                 string   `protobuf:"bytes,2,opt,name=type,proto3" json:"type,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
 	XXX_unrecognized     []byte   `json:"-"`
 	XXX_sizecache        int32    `json:"-"`
 }
 
-func (m *HelloReply) Reset()         { *m = HelloReply{} }
-func (m *HelloReply) String() string { return proto.CompactTextString(m) }
-func (*HelloReply) ProtoMessage()    {}
-func (*HelloReply) Descriptor() ([]byte, []int) {
+func (m *GetExperienceResp) Reset()         { *m = GetExperienceResp{} }
+func (m *GetExperienceResp) String() string { return proto.CompactTextString(m) }
+func (*GetExperienceResp) ProtoMessage()    {}
+func (*GetExperienceResp) Descriptor() ([]byte, []int) {
 	return fileDescriptor_a44eebf31dd75a2c, []int{1}
 }
 
-func (m *HelloReply) XXX_Unmarshal(b []byte) error {
-	return xxx_messageInfo_HelloReply.Unmarshal(m, b)
+func (m *GetExperienceResp) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_GetExperienceResp.Unmarshal(m, b)
 }
-func (m *HelloReply) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
-	return xxx_messageInfo_HelloReply.Marshal(b, m, deterministic)
+func (m *GetExperienceResp) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_GetExperienceResp.Marshal(b, m, deterministic)
 }
-func (m *HelloReply) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_HelloReply.Merge(m, src)
+func (m *GetExperienceResp) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_GetExperienceResp.Merge(m, src)
 }
-func (m *HelloReply) XXX_Size() int {
-	return xxx_messageInfo_HelloReply.Size(m)
+func (m *GetExperienceResp) XXX_Size() int {
+	return xxx_messageInfo_GetExperienceResp.Size(m)
 }
-func (m *HelloReply) XXX_DiscardUnknown() {
-	xxx_messageInfo_HelloReply.DiscardUnknown(m)
+func (m *GetExperienceResp) XXX_DiscardUnknown() {
+	xxx_messageInfo_GetExperienceResp.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_HelloReply proto.InternalMessageInfo
+var xxx_messageInfo_GetExperienceResp proto.InternalMessageInfo
 
-func (m *HelloReply) GetMessage() string {
+func (m *GetExperienceResp) GetId() string {
 	if m != nil {
-		return m.Message
+		return m.Id
+	}
+	return ""
+}
+
+func (m *GetExperienceResp) GetType() string {
+	if m != nil {
+		return m.Type
 	}
 	return ""
 }
 
 func init() {
-	proto.RegisterType((*HelloRequest)(nil), "goodsearch.HelloRequest")
-	proto.RegisterType((*HelloReply)(nil), "goodsearch.HelloReply")
+	proto.RegisterType((*GetExperienceReq)(nil), "goodsearch.GetExperienceReq")
+	proto.RegisterType((*GetExperienceResp)(nil), "goodsearch.GetExperienceResp")
 }
 
 func init() { proto.RegisterFile("goodsearch.proto", fileDescriptor_a44eebf31dd75a2c) }
@@ -115,13 +121,13 @@ var fileDescriptor_a44eebf31dd75a2c = []byte{
 	// 144 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0x48, 0xcf, 0xcf, 0x4f,
 	0x29, 0x4e, 0x4d, 0x2c, 0x4a, 0xce, 0xd0, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0xe2, 0x42, 0x88,
-	0x28, 0x29, 0x71, 0xf1, 0x78, 0xa4, 0xe6, 0xe4, 0xe4, 0x07, 0xa5, 0x16, 0x96, 0xa6, 0x16, 0x97,
-	0x08, 0x09, 0x71, 0xb1, 0xe4, 0x25, 0xe6, 0xa6, 0x4a, 0x30, 0x2a, 0x30, 0x6a, 0x70, 0x06, 0x81,
-	0xd9, 0x4a, 0x6a, 0x5c, 0x5c, 0x50, 0x35, 0x05, 0x39, 0x95, 0x42, 0x12, 0x5c, 0xec, 0xb9, 0xa9,
-	0xc5, 0xc5, 0x89, 0xe9, 0x30, 0x45, 0x30, 0xae, 0x91, 0x0f, 0x17, 0x97, 0x7b, 0x7e, 0x7e, 0x4a,
-	0x30, 0xd8, 0x64, 0x21, 0x3b, 0x2e, 0x8e, 0xe0, 0xc4, 0x4a, 0xb0, 0x46, 0x21, 0x09, 0x3d, 0x24,
-	0x47, 0x20, 0xdb, 0x27, 0x25, 0x86, 0x45, 0xa6, 0x20, 0xa7, 0x52, 0x89, 0x21, 0x89, 0x0d, 0xec,
-	0x58, 0x63, 0x40, 0x00, 0x00, 0x00, 0xff, 0xff, 0x80, 0x89, 0x4f, 0x38, 0xc0, 0x00, 0x00, 0x00,
+	0x28, 0x29, 0x71, 0x09, 0xb8, 0xa7, 0x96, 0xb8, 0x56, 0x14, 0xa4, 0x16, 0x65, 0xa6, 0xe6, 0x25,
+	0xa7, 0x06, 0xa5, 0x16, 0x0a, 0xf1, 0x71, 0x31, 0x65, 0xa6, 0x48, 0x30, 0x2a, 0x30, 0x6a, 0x70,
+	0x06, 0x31, 0x65, 0xa6, 0x28, 0x99, 0x73, 0x09, 0xa2, 0xa9, 0x29, 0x2e, 0x40, 0x57, 0x24, 0x24,
+	0xc4, 0xc5, 0x52, 0x52, 0x59, 0x90, 0x2a, 0xc1, 0x04, 0x16, 0x01, 0xb3, 0x8d, 0x62, 0xb8, 0xb8,
+	0xdc, 0xf3, 0xf3, 0x53, 0x82, 0xc1, 0x56, 0x09, 0xf9, 0x71, 0xf1, 0xa2, 0x18, 0x23, 0x24, 0xa3,
+	0x87, 0xe4, 0x34, 0x74, 0x57, 0x48, 0xc9, 0xe2, 0x91, 0x2d, 0x2e, 0x50, 0x62, 0x48, 0x62, 0x03,
+	0xfb, 0xc6, 0x18, 0x10, 0x00, 0x00, 0xff, 0xff, 0x04, 0x37, 0x93, 0x32, 0xe1, 0x00, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -136,7 +142,7 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type GoodSearchClient interface {
-	SayHello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloReply, error)
+	GetExperience(ctx context.Context, in *GetExperienceReq, opts ...grpc.CallOption) (*GetExperienceResp, error)
 }
 
 type goodSearchClient struct {
@@ -147,9 +153,9 @@ func NewGoodSearchClient(cc *grpc.ClientConn) GoodSearchClient {
 	return &goodSearchClient{cc}
 }
 
-func (c *goodSearchClient) SayHello(ctx context.Context, in *HelloRequest, opts ...grpc.CallOption) (*HelloReply, error) {
-	out := new(HelloReply)
-	err := c.cc.Invoke(ctx, "/goodsearch.GoodSearch/SayHello", in, out, opts...)
+func (c *goodSearchClient) GetExperience(ctx context.Context, in *GetExperienceReq, opts ...grpc.CallOption) (*GetExperienceResp, error) {
+	out := new(GetExperienceResp)
+	err := c.cc.Invoke(ctx, "/goodsearch.GoodSearch/GetExperience", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -158,35 +164,35 @@ func (c *goodSearchClient) SayHello(ctx context.Context, in *HelloRequest, opts 
 
 // GoodSearchServer is the server API for GoodSearch service.
 type GoodSearchServer interface {
-	SayHello(context.Context, *HelloRequest) (*HelloReply, error)
+	GetExperience(context.Context, *GetExperienceReq) (*GetExperienceResp, error)
 }
 
 // UnimplementedGoodSearchServer can be embedded to have forward compatible implementations.
 type UnimplementedGoodSearchServer struct {
 }
 
-func (*UnimplementedGoodSearchServer) SayHello(ctx context.Context, req *HelloRequest) (*HelloReply, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method SayHello not implemented")
+func (*UnimplementedGoodSearchServer) GetExperience(ctx context.Context, req *GetExperienceReq) (*GetExperienceResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetExperience not implemented")
 }
 
 func RegisterGoodSearchServer(s *grpc.Server, srv GoodSearchServer) {
 	s.RegisterService(&_GoodSearch_serviceDesc, srv)
 }
 
-func _GoodSearch_SayHello_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(HelloRequest)
+func _GoodSearch_GetExperience_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(GetExperienceReq)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(GoodSearchServer).SayHello(ctx, in)
+		return srv.(GoodSearchServer).GetExperience(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/goodsearch.GoodSearch/SayHello",
+		FullMethod: "/goodsearch.GoodSearch/GetExperience",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(GoodSearchServer).SayHello(ctx, req.(*HelloRequest))
+		return srv.(GoodSearchServer).GetExperience(ctx, req.(*GetExperienceReq))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -196,8 +202,8 @@ var _GoodSearch_serviceDesc = grpc.ServiceDesc{
 	HandlerType: (*GoodSearchServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "SayHello",
-			Handler:    _GoodSearch_SayHello_Handler,
+			MethodName: "GetExperience",
+			Handler:    _GoodSearch_GetExperience_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

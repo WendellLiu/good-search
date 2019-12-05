@@ -49,43 +49,9 @@ type Archive struct {
 	Reason     string `bson:"reason" json:"reason"`
 }
 
-type CommonExperience struct {
-	ID          primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty"`
-	Type        string             `bson:"type" json:"type"`
-	AuthorID    primitive.ObjectID `bson:"author_id" json:"author_id"`
-	Compnay     ExpCompany         `bson:"company" json:"company"`
-	LikeCount   int64              `bson:"like_count" json:"like_count"`
-	ReplyCount  int64              `bson:"reply_count" json:"reply_count"`
-	CreatedAt   time.Time          `bson:"created_at" json:"created_at"`
-	Region      string             `bson:"region" json:"region"`
-	JobTitle    string             `bson:"job_title" json:"job_title"`
-	Title       string             `bson:"title" json:"title"`
-	Education   string             `bson:"education" json:"education"`
-	Status      string             `bson:"status" json:"status"`
-	ReportCount int64              `bson:"report_count" json:"report_count"`
-	Sections    []ExpSection       `bson:"sections" json:"sections"`
-	Salary      Salary             `bson:"salary" json:"salary"`
-	Archive     Archive            `bson:"archive" json:"archive"`
-	UID         string             `bson:"id" json:"id"`
-}
-
-type InterviewExperience struct {
-	OverallRating               int64         `bson:"overall_rating" json:"overall_rating"`
-	InterviewResult             string        `bson:"interview_result" json:"interview_result"`
-	InterviewTime               InterviewTime `bson:"interview_time" json:"interview"`
-	InterviewQAs                []InterviewQA `bson:"interview_qas" json:"interview_qas"`
-	InterviewSensitiveQuestions []string      `bson:"interview_sensitive_questions" json:"interview_sensitive_questions"`
-}
-
 type YearMonth struct {
 	Year  int64 `bson:"year" json:"year"`
 	Month int64 `bson:"month" json:"month"`
-}
-
-type WorkExperience struct {
-	WeekWorkTime      int64     `bson:"week_work_time" json:"week_work_time"`
-	RecommendToOthers string    `bson:"recommend_to_others" json:"recommend_to_others"`
-	DataTime          YearMonth `bson:"data_time" json:"data_time"`
 }
 
 type Experience struct {
