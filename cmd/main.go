@@ -20,7 +20,7 @@ func main() {
 	logger.Load()
 
 	db, err := mongo.New()
-	server.Server(db)
+	server.Load(db)
 
 	//experienceID := "598075e1185cc200046fde29"
 	//experience, err := dto.GetExperience(context.Background(), db, experienceID)
