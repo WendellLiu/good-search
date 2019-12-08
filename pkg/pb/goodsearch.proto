@@ -3,7 +3,8 @@ syntax = "proto3";
 package goodsearch;
 
 service GoodSearch{
-  rpc GetExperience (GetExperienceReq) returns (GetExperienceResp) {}
+  rpc GetExperience (GetExperienceReq) returns (GetExperienceResp);
+  rpc UpdateExperience (UpdateExperienceReq) returns (UpdateExperienceResp);
 }
 
 message GetExperienceReq {
@@ -15,3 +16,15 @@ message GetExperienceResp {
   string type = 2;
 }  
 
+message UpdateExperienceReq {
+  string id = 1;
+}
+
+message UpdateExperienceResp {
+  Status status = 1; 
+}
+
+enum Status {
+  SUCCESS = 0;
+  FAILURE = 1;
+}

@@ -24,6 +24,31 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.ProtoPackageIsVersion3 // please upgrade the proto package
 
+type Status int32
+
+const (
+	Status_SUCCESS Status = 0
+	Status_FAILURE Status = 1
+)
+
+var Status_name = map[int32]string{
+	0: "SUCCESS",
+	1: "FAILURE",
+}
+
+var Status_value = map[string]int32{
+	"SUCCESS": 0,
+	"FAILURE": 1,
+}
+
+func (x Status) String() string {
+	return proto.EnumName(Status_name, int32(x))
+}
+
+func (Status) EnumDescriptor() ([]byte, []int) {
+	return fileDescriptor_a44eebf31dd75a2c, []int{0}
+}
+
 type GetExperienceReq struct {
 	Id                   string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
@@ -110,24 +135,111 @@ func (m *GetExperienceResp) GetType() string {
 	return ""
 }
 
+type UpdateExperienceReq struct {
+	Id                   string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *UpdateExperienceReq) Reset()         { *m = UpdateExperienceReq{} }
+func (m *UpdateExperienceReq) String() string { return proto.CompactTextString(m) }
+func (*UpdateExperienceReq) ProtoMessage()    {}
+func (*UpdateExperienceReq) Descriptor() ([]byte, []int) {
+	return fileDescriptor_a44eebf31dd75a2c, []int{2}
+}
+
+func (m *UpdateExperienceReq) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_UpdateExperienceReq.Unmarshal(m, b)
+}
+func (m *UpdateExperienceReq) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_UpdateExperienceReq.Marshal(b, m, deterministic)
+}
+func (m *UpdateExperienceReq) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UpdateExperienceReq.Merge(m, src)
+}
+func (m *UpdateExperienceReq) XXX_Size() int {
+	return xxx_messageInfo_UpdateExperienceReq.Size(m)
+}
+func (m *UpdateExperienceReq) XXX_DiscardUnknown() {
+	xxx_messageInfo_UpdateExperienceReq.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_UpdateExperienceReq proto.InternalMessageInfo
+
+func (m *UpdateExperienceReq) GetId() string {
+	if m != nil {
+		return m.Id
+	}
+	return ""
+}
+
+type UpdateExperienceResp struct {
+	Status               Status   `protobuf:"varint,1,opt,name=status,proto3,enum=goodsearch.Status" json:"status,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *UpdateExperienceResp) Reset()         { *m = UpdateExperienceResp{} }
+func (m *UpdateExperienceResp) String() string { return proto.CompactTextString(m) }
+func (*UpdateExperienceResp) ProtoMessage()    {}
+func (*UpdateExperienceResp) Descriptor() ([]byte, []int) {
+	return fileDescriptor_a44eebf31dd75a2c, []int{3}
+}
+
+func (m *UpdateExperienceResp) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_UpdateExperienceResp.Unmarshal(m, b)
+}
+func (m *UpdateExperienceResp) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_UpdateExperienceResp.Marshal(b, m, deterministic)
+}
+func (m *UpdateExperienceResp) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_UpdateExperienceResp.Merge(m, src)
+}
+func (m *UpdateExperienceResp) XXX_Size() int {
+	return xxx_messageInfo_UpdateExperienceResp.Size(m)
+}
+func (m *UpdateExperienceResp) XXX_DiscardUnknown() {
+	xxx_messageInfo_UpdateExperienceResp.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_UpdateExperienceResp proto.InternalMessageInfo
+
+func (m *UpdateExperienceResp) GetStatus() Status {
+	if m != nil {
+		return m.Status
+	}
+	return Status_SUCCESS
+}
+
 func init() {
+	proto.RegisterEnum("goodsearch.Status", Status_name, Status_value)
 	proto.RegisterType((*GetExperienceReq)(nil), "goodsearch.GetExperienceReq")
 	proto.RegisterType((*GetExperienceResp)(nil), "goodsearch.GetExperienceResp")
+	proto.RegisterType((*UpdateExperienceReq)(nil), "goodsearch.UpdateExperienceReq")
+	proto.RegisterType((*UpdateExperienceResp)(nil), "goodsearch.UpdateExperienceResp")
 }
 
 func init() { proto.RegisterFile("goodsearch.proto", fileDescriptor_a44eebf31dd75a2c) }
 
 var fileDescriptor_a44eebf31dd75a2c = []byte{
-	// 144 bytes of a gzipped FileDescriptorProto
+	// 235 bytes of a gzipped FileDescriptorProto
 	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0x48, 0xcf, 0xcf, 0x4f,
 	0x29, 0x4e, 0x4d, 0x2c, 0x4a, 0xce, 0xd0, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17, 0xe2, 0x42, 0x88,
 	0x28, 0x29, 0x71, 0x09, 0xb8, 0xa7, 0x96, 0xb8, 0x56, 0x14, 0xa4, 0x16, 0x65, 0xa6, 0xe6, 0x25,
 	0xa7, 0x06, 0xa5, 0x16, 0x0a, 0xf1, 0x71, 0x31, 0x65, 0xa6, 0x48, 0x30, 0x2a, 0x30, 0x6a, 0x70,
 	0x06, 0x31, 0x65, 0xa6, 0x28, 0x99, 0x73, 0x09, 0xa2, 0xa9, 0x29, 0x2e, 0x40, 0x57, 0x24, 0x24,
-	0xc4, 0xc5, 0x52, 0x52, 0x59, 0x90, 0x2a, 0xc1, 0x04, 0x16, 0x01, 0xb3, 0x8d, 0x62, 0xb8, 0xb8,
-	0xdc, 0xf3, 0xf3, 0x53, 0x82, 0xc1, 0x56, 0x09, 0xf9, 0x71, 0xf1, 0xa2, 0x18, 0x23, 0x24, 0xa3,
-	0x87, 0xe4, 0x34, 0x74, 0x57, 0x48, 0xc9, 0xe2, 0x91, 0x2d, 0x2e, 0x50, 0x62, 0x48, 0x62, 0x03,
-	0xfb, 0xc6, 0x18, 0x10, 0x00, 0x00, 0xff, 0xff, 0x04, 0x37, 0x93, 0x32, 0xe1, 0x00, 0x00, 0x00,
+	0xc4, 0xc5, 0x52, 0x52, 0x59, 0x90, 0x2a, 0xc1, 0x04, 0x16, 0x01, 0xb3, 0x95, 0x54, 0xb9, 0x84,
+	0x43, 0x0b, 0x52, 0x12, 0x4b, 0x52, 0xf1, 0x9b, 0xef, 0xc4, 0x25, 0x82, 0xa9, 0xac, 0xb8, 0x40,
+	0x48, 0x8b, 0x8b, 0xad, 0xb8, 0x24, 0xb1, 0xa4, 0xb4, 0x18, 0xac, 0x96, 0xcf, 0x48, 0x48, 0x0f,
+	0xc9, 0x2b, 0xc1, 0x60, 0x99, 0x20, 0xa8, 0x0a, 0x2d, 0x25, 0x2e, 0x36, 0x88, 0x88, 0x10, 0x37,
+	0x17, 0x7b, 0x70, 0xa8, 0xb3, 0xb3, 0x6b, 0x70, 0xb0, 0x00, 0x03, 0x88, 0xe3, 0xe6, 0xe8, 0xe9,
+	0x13, 0x1a, 0xe4, 0x2a, 0xc0, 0x68, 0xb4, 0x91, 0x91, 0x8b, 0xcb, 0x3d, 0x3f, 0x3f, 0x25, 0x18,
+	0x6c, 0x82, 0x90, 0x0f, 0x17, 0x2f, 0x8a, 0xb7, 0x84, 0x64, 0x90, 0xcd, 0x47, 0x0f, 0x15, 0x29,
+	0x59, 0x3c, 0xb2, 0xc5, 0x05, 0x42, 0xa1, 0x5c, 0x02, 0xe8, 0x9e, 0x10, 0x92, 0x47, 0xd6, 0x82,
+	0x25, 0x24, 0xa4, 0x14, 0xf0, 0x2b, 0x28, 0x2e, 0x48, 0x62, 0x03, 0x47, 0x99, 0x31, 0x20, 0x00,
+	0x00, 0xff, 0xff, 0xc8, 0xbb, 0x23, 0x48, 0xc6, 0x01, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -143,6 +255,7 @@ const _ = grpc.SupportPackageIsVersion4
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type GoodSearchClient interface {
 	GetExperience(ctx context.Context, in *GetExperienceReq, opts ...grpc.CallOption) (*GetExperienceResp, error)
+	UpdateExperience(ctx context.Context, in *UpdateExperienceReq, opts ...grpc.CallOption) (*UpdateExperienceResp, error)
 }
 
 type goodSearchClient struct {
@@ -162,9 +275,19 @@ func (c *goodSearchClient) GetExperience(ctx context.Context, in *GetExperienceR
 	return out, nil
 }
 
+func (c *goodSearchClient) UpdateExperience(ctx context.Context, in *UpdateExperienceReq, opts ...grpc.CallOption) (*UpdateExperienceResp, error) {
+	out := new(UpdateExperienceResp)
+	err := c.cc.Invoke(ctx, "/goodsearch.GoodSearch/UpdateExperience", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // GoodSearchServer is the server API for GoodSearch service.
 type GoodSearchServer interface {
 	GetExperience(context.Context, *GetExperienceReq) (*GetExperienceResp, error)
+	UpdateExperience(context.Context, *UpdateExperienceReq) (*UpdateExperienceResp, error)
 }
 
 // UnimplementedGoodSearchServer can be embedded to have forward compatible implementations.
@@ -173,6 +296,9 @@ type UnimplementedGoodSearchServer struct {
 
 func (*UnimplementedGoodSearchServer) GetExperience(ctx context.Context, req *GetExperienceReq) (*GetExperienceResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetExperience not implemented")
+}
+func (*UnimplementedGoodSearchServer) UpdateExperience(ctx context.Context, req *UpdateExperienceReq) (*UpdateExperienceResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method UpdateExperience not implemented")
 }
 
 func RegisterGoodSearchServer(s *grpc.Server, srv GoodSearchServer) {
@@ -197,6 +323,24 @@ func _GoodSearch_GetExperience_Handler(srv interface{}, ctx context.Context, dec
 	return interceptor(ctx, in, info, handler)
 }
 
+func _GoodSearch_UpdateExperience_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(UpdateExperienceReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GoodSearchServer).UpdateExperience(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/goodsearch.GoodSearch/UpdateExperience",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GoodSearchServer).UpdateExperience(ctx, req.(*UpdateExperienceReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 var _GoodSearch_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "goodsearch.GoodSearch",
 	HandlerType: (*GoodSearchServer)(nil),
@@ -204,6 +348,10 @@ var _GoodSearch_serviceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetExperience",
 			Handler:    _GoodSearch_GetExperience_Handler,
+		},
+		{
+			MethodName: "UpdateExperience",
+			Handler:    _GoodSearch_UpdateExperience_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
