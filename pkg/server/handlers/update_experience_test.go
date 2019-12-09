@@ -7,6 +7,7 @@ import (
 	"github.com/stretchr/testify/assert"
 
 	"github.com/wendellliu/good-search/pkg/dto"
+	"github.com/wendellliu/good-search/pkg/logger"
 	pb "github.com/wendellliu/good-search/pkg/pb"
 )
 
@@ -14,30 +15,38 @@ type mockRepo struct {
 	dto.Repository
 }
 
-func (m *mockRepo) mockGetExperience(ctx context.Context, id string) (dto.Experience, error) {
+func (m mockRepo) GetExperience(ctx context.Context, id string) (dto.Experience, error) {
 	return dto.Experience{}, nil
 }
 
 func TestUpdateExperience(t *testing.T) {
 	tests := []struct {
 		description string
-		wantRep     *pb.UpdateExperienceResp
+		paramID     string
+		wantResp    *pb.UpdateExperienceResp
 		wantErr     bool
 	}{
 		{
 			description: "run success",
-			wantRep:     &pb.UpdateExperienceResp{Status: pb.Status_SUCCESS},
+			paramID:     "123",
+			wantResp:    &pb.UpdateExperienceResp{Status: pb.Status_SUCCESS},
 			wantErr:     false,
 		},
 	}
 
+	logger.Load()
 	repo := mockRepo{}
-	server := Server{Repository: repo}
+	handlers := Server{Repository: repo}
 
 	for _, tt := range tests {
 		tt := tt
 		t.Run(tt.description, func(t *testing.T) {
+			req := &pb.UpdateExperienceReq{
+				Id: tt.paramID,
+			}
+			resp, gotErr := handlers.UpdateExperience(context.Background(), req)
 
+			assert.EqualValues(t, tt.wantResp, resp)
 			switch tt.wantErr {
 			case true:
 				assert.NotNil(t, gotErr)

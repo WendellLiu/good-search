@@ -1,14 +1,17 @@
 #!/bin/bash
 SCRIPT_NAME="do"
+BASEDIR=$(dirname "$0")
 
 if [ $# -ne 0  ]; then
         flag="${1}"
         if [ "$flag" == "gen-pb" ]; then
                 (set -x; protoc -I pkg/pb/ pkg/pb/*.proto --go_out=plugins=grpc:pkg/pb)
         elif [ "$flag" == "run" ]; then
-                (set -x; go run cmd/main.go)
+                (set -x; go run "${BASEDIR}/cmd/main.go")
+        elif [ "$flag" == "test" ]; then
+                (set -x; go test "${BASEDIR}/pkg/...")
         elif [ "$flag" == "dummy" ]; then
-                echo "dummy"
+                echo "dummy ${BASEDIR}"
         fi
 else
     echo "Usage: \"./${SCRIPT_NAME} gen-pb\"";

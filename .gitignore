@@ -13,3 +13,5 @@
 
 es-data/
 .env
+
+cmd/main
