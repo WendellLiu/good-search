@@ -7,5 +7,5 @@ import (
 
 type Server struct {
 	pb.UnimplementedGoodSearchServer
-	Repository dto.Repository
+	Repository dto.DTO
 }

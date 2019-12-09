@@ -16,7 +16,7 @@ import (
 	"google.golang.org/grpc"
 )
 
-func Load(repo dto.Repository) {
+func Load(repo dto.DTO) {
 	port := fmt.Sprintf(":%s", config.Config.GRPCPort)
 
 	lis, err := net.Listen("tcp", port)

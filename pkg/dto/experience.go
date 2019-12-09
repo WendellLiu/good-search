@@ -96,7 +96,7 @@ type ExperienceDTO interface {
 	GetExperiences(ctx context.Context, params *ExperiencesParams, opts dbAdapter.Options) ([]Experience, error)
 }
 
-func (repo *Repository) GetExperience(ctx context.Context, id string) (Experience, error) {
+func (repo Repository) GetExperience(ctx context.Context, id string) (Experience, error) {
 	collectionName := "experiences"
 	result := Experience{}
 	var err error
@@ -117,7 +117,7 @@ func (repo *Repository) GetExperience(ctx context.Context, id string) (Experienc
 
 }
 
-func (repo *Repository) GetExperiences(
+func (repo Repository) GetExperiences(
 	ctx context.Context,
 	params *ExperiencesParams,
 	opts dbAdapter.Options,
