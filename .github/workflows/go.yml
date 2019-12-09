@@ -1,12 +1,6 @@
 name: Go
 on: [push]
 jobs:
-  test:
-    name: test
-    runs-on: ubuntu-latest
-    steps:
-      - name: test
-        run: sh ./do test 
 
   build:
     name: Build
@@ -29,6 +23,7 @@ jobs:
             curl https://raw.githubusercontent.com/golang/dep/master/install.sh | sh
             dep ensure
         fi
-
+    - name: test
+      run: sh ./do test 
     - name: Build
       run: sh ./do build 
