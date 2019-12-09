@@ -91,12 +91,17 @@ type ExperiencesParams struct {
 	Type *string `bson:"type,omitempty" json:"type,omitempty"`
 }
 
-func GetExperience(ctx context.Context, db dbAdapter.Database, id string) (Experience, error) {
+type ExperienceDTO interface {
+	GetExperience(ctx context.Context, id string) (Experience, error)
+	GetExperiences(ctx context.Context, params *ExperiencesParams, opts dbAdapter.Options) ([]Experience, error)
+}
+
+func (repo *Repository) GetExperience(ctx context.Context, id string) (Experience, error) {
 	collectionName := "experiences"
 	result := Experience{}
 	var err error
 
-	collection := db.UseTable(collectionName)
+	collection := repo.DB.UseTable(collectionName)
 
 	err = collection.QueryOne(
 		context.Background(),
@@ -112,9 +117,8 @@ func GetExperience(ctx context.Context, db dbAdapter.Database, id string) (Exper
 
 }
 
-func GetExperiences(
+func (repo *Repository) GetExperiences(
 	ctx context.Context,
-	db dbAdapter.Database,
 	params *ExperiencesParams,
 	opts dbAdapter.Options,
 ) ([]Experience, error) {
@@ -126,7 +130,7 @@ func GetExperiences(
 		query["type"] = params.Type
 	}
 
-	collection := db.UseTable(collectionName)
+	collection := repo.DB.UseTable(collectionName)
 	err := collection.QueryPagination(
 		ctx,
 		query,

@@ -5,8 +5,8 @@ import (
 	"net"
 
 	"github.com/sirupsen/logrus"
-	"github.com/wendellliu/good-search/pkg/common/dbAdapter"
 	"github.com/wendellliu/good-search/pkg/config"
+	"github.com/wendellliu/good-search/pkg/dto"
 	"github.com/wendellliu/good-search/pkg/logger"
 	pb "github.com/wendellliu/good-search/pkg/pb"
 	"github.com/wendellliu/good-search/pkg/server/handlers"
@@ -16,7 +16,7 @@ import (
 	"google.golang.org/grpc"
 )
 
-func Load(db dbAdapter.Database) {
+func Load(repo dto.Repository) {
 	port := fmt.Sprintf(":%s", config.Config.GRPCPort)
 
 	lis, err := net.Listen("tcp", port)
@@ -29,7 +29,7 @@ func Load(db dbAdapter.Database) {
 			grpc_logrus.UnaryServerInterceptor(loggerEntry),
 		)),
 	)
-	pb.RegisterGoodSearchServer(s, &handlers.Server{DB: db})
+	pb.RegisterGoodSearchServer(s, &handlers.Server{Repository: repo})
 
 	logger.Logger.Infof("grpc server successfully connect to port %s", port)
 	err = s.Serve(lis)
