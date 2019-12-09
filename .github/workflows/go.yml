@@ -1,6 +1,12 @@
 name: Go
 on: [push]
 jobs:
+  test:
+    name: test
+    runs-on: ubuntu-latest
+    steps:
+      - name: test
+        run: sh ./do test 
 
   build:
     name: Build
@@ -25,4 +31,4 @@ jobs:
         fi
 
     - name: Build
-      run: go build -v ./cmd/main.go 
+      run: sh ./do build 
