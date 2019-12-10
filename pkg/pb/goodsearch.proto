@@ -5,6 +5,7 @@ package goodsearch;
 service GoodSearch{
   rpc GetExperience (GetExperienceReq) returns (GetExperienceResp);
   rpc UpdateExperience (UpdateExperienceReq) returns (UpdateExperienceResp);
+  rpc IndexAllExperiences (IndexAllExperiencesReq) returns (IndexAllExperiencesResp);
 }
 
 message GetExperienceReq {
@@ -32,4 +33,10 @@ enum Status {
 
 message ExperiencePayload {
  string type = 1;
+}
+
+message IndexAllExperiencesReq {}
+
+message IndexAllExperiencesResp {
+  Status status = 1;
 }
