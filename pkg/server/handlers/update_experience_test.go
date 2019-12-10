@@ -15,22 +15,40 @@ type mockRepo struct {
 	dto.Repository
 }
 
-func (m mockRepo) GetExperience(ctx context.Context, id string) (dto.Experience, error) {
-	return dto.Experience{}, nil
+var mockGetExeprience = func() (dto.Experience, error) {
+	return dto.Experience{
+		Type: "interview",
+	}, nil
 }
 
+func (m mockRepo) GetExperience(ctx context.Context, id string) (dto.Experience, error) {
+	return mockGetExeprience()
+}
 func TestUpdateExperience(t *testing.T) {
 	tests := []struct {
 		description string
 		paramID     string
 		wantResp    *pb.UpdateExperienceResp
 		wantErr     bool
+		setup       func()
 	}{
 		{
 			description: "run success",
 			paramID:     "123",
-			wantResp:    &pb.UpdateExperienceResp{Status: pb.Status_SUCCESS},
-			wantErr:     false,
+			wantResp: &pb.UpdateExperienceResp{
+				Status: pb.Status_SUCCESS,
+				Experience: &pb.ExperiencePayload{
+					Type: "work",
+				},
+			},
+			wantErr: false,
+			setup: func() {
+				mockGetExeprience = func() (dto.Experience, error) {
+					return dto.Experience{
+						Type: "work",
+					}, nil
+				}
+			},
 		},
 	}
 
@@ -41,6 +59,9 @@ func TestUpdateExperience(t *testing.T) {
 	for _, tt := range tests {
 		tt := tt
 		t.Run(tt.description, func(t *testing.T) {
+			if tt.setup != nil {
+				tt.setup()
+			}
 			req := &pb.UpdateExperienceReq{
 				Id: tt.paramID,
 			}

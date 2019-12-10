@@ -17,5 +17,10 @@ func (s *Server) UpdateExperience(ctx context.Context, req *pb.UpdateExperienceR
 	}
 	logger.Logger.WithFields(logrus.Fields{"experience": fmt.Sprintf("%+v", experience)}).Info("get result")
 
-	return &pb.UpdateExperienceResp{Status: pb.Status_SUCCESS}, nil
+	return &pb.UpdateExperienceResp{
+		Status: pb.Status_SUCCESS,
+		Experience: &pb.ExperiencePayload{
+			Type: experience.Type,
+		},
+	}, nil
 }

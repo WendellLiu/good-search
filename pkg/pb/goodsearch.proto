@@ -22,9 +22,14 @@ message UpdateExperienceReq {
 
 message UpdateExperienceResp {
   Status status = 1; 
+  ExperiencePayload experience = 2;
 }
 
 enum Status {
   SUCCESS = 0;
   FAILURE = 1;
+}
+
+message ExperiencePayload {
+ string type = 1;
 }
