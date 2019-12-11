@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"context"
+	"sync"
 	"testing"
 
 	"github.com/stretchr/testify/assert"
@@ -13,6 +14,14 @@ import (
 
 type mockRepo struct {
 	dto.Repository
+	mux        sync.Mutex
+	experience dto.Experience
+}
+
+func (m *mockRepo) setExperience(e dto.Experience) {
+	m.mux.Lock()
+	defer m.mux.Unlock()
+	m.dto.experience = e
 }
 
 var mockGetExeprience = func() (dto.Experience, error) {
@@ -22,9 +31,13 @@ var mockGetExeprience = func() (dto.Experience, error) {
 }
 
 func (m mockRepo) GetExperience(ctx context.Context, id string) (dto.Experience, error) {
-	return mockGetExeprience()
+	return m.dto.Repository.Experience, nil
 }
 func TestUpdateExperience(t *testing.T) {
+	logger.Load()
+	repo := mockRepo{}
+	handlers := Server{Repository: repo}
+
 	tests := []struct {
 		description string
 		paramID     string
@@ -43,18 +56,13 @@ func TestUpdateExperience(t *testing.T) {
 			},
 			wantErr: false,
 			setup: func() {
-				mockGetExeprience = func() (dto.Experience, error) {
-					return dto.Experience{
-						Type: "work",
-					}, nil
-				}
+				repo.setExperience(dto.Experience{
+					Type: "work",
+				})
+
 			},
 		},
 	}
-
-	logger.Load()
-	repo := mockRepo{}
-	handlers := Server{Repository: repo}
 
 	for _, tt := range tests {
 		tt := tt
