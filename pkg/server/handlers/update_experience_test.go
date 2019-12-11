@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"context"
+	"fmt"
 	"sync"
 	"testing"
 
@@ -14,28 +15,25 @@ import (
 
 type mockRepo struct {
 	dto.Repository
-	mux        sync.Mutex
+	mux        *sync.Mutex
 	experience dto.Experience
 }
 
 func (m *mockRepo) setExperience(e dto.Experience) {
 	m.mux.Lock()
 	defer m.mux.Unlock()
-	m.dto.experience = e
-}
-
-var mockGetExeprience = func() (dto.Experience, error) {
-	return dto.Experience{
-		Type: "interview",
-	}, nil
+	m.experience = e
+	fmt.Printf("set experience %+v \n", m.experience)
 }
 
 func (m mockRepo) GetExperience(ctx context.Context, id string) (dto.Experience, error) {
-	return m.dto.Repository.Experience, nil
+	fmt.Printf("mock get experience %+v\n", m.experience)
+	return m.experience, nil
 }
+
 func TestUpdateExperience(t *testing.T) {
 	logger.Load()
-	repo := mockRepo{}
+	repo := &mockRepo{mux: &sync.Mutex{}, experience: dto.Experience{Type: "foo"}}
 	handlers := Server{Repository: repo}
 
 	tests := []struct {
@@ -59,7 +57,6 @@ func TestUpdateExperience(t *testing.T) {
 				repo.setExperience(dto.Experience{
 					Type: "work",
 				})
-
 			},
 		},
 	}

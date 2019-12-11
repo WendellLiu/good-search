@@ -21,6 +21,6 @@ func main() {
 	logger.Load()
 
 	db, err := mongo.New()
-	repository := dto.Repository{DB: db}
+	repository := &dto.Repository{DB: db}
 	server.Load(repository)
 }
