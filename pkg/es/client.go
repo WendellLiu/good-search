@@ -32,7 +32,7 @@ func New() (Elasticsearch, error) {
 	return Elasticsearch{Client: esClient}, err
 }
 
-const EXPERIENCE_INDEX = "experience"
+const EXPERIENCE_INDEX = "goodjob-experience"
 
 func (es *Elasticsearch) IndexExperience(ctx context.Context, experience dto.Experience) error {
 	var err error
