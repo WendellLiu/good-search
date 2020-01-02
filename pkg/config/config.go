@@ -1,6 +1,8 @@
 package config
 
-import "os"
+import (
+	"os"
+)
 
 type BasicConfig struct {
 	MongoDBHost     string
@@ -8,6 +10,7 @@ type BasicConfig struct {
 	MongoDBPassword string
 	MongoDBName     string
 	GRPCPort        string
+	ESAddress       string
 }
 
 var Config BasicConfig
@@ -19,5 +22,6 @@ func Load() {
 		MongoDBPassword: os.Getenv("MONGO_DB_PASSWORD"),
 		MongoDBName:     os.Getenv("MONGO_DB_NAME"),
 		GRPCPort:        os.Getenv("GRPC_PORT"),
+		ESAddress:       os.Getenv("ES_ADDRESS"),
 	}
 }
