@@ -12,11 +12,13 @@ import (
 func (s *Server) UpdateExperience(ctx context.Context, req *pb.UpdateExperienceReq) (*pb.UpdateExperienceResp, error) {
 	experience, err := s.Repository.GetExperience(context.Background(), req.Id)
 
+	err = s.Es.IndexExperience(context.Background(), experience)
+
 	if err != nil {
 		logger.Logger.Error(err)
 	}
-	logger.Logger.WithFields(logrus.Fields{"experience": fmt.Sprintf("%+v", experience)}).Info("get result")
 
+	logger.Logger.WithFields(logrus.Fields{"experience": fmt.Sprintf("%+v", experience)}).Info("get result")
 	return &pb.UpdateExperienceResp{
 		Status: pb.Status_SUCCESS,
 		Experience: &pb.ExperiencePayload{

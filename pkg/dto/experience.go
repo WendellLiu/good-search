@@ -56,7 +56,7 @@ type YearMonth struct {
 
 type Experience struct {
 	// common
-	ID          primitive.ObjectID `bson:"_id,omitempty" json:"_id,omitempty"`
+	ID          primitive.ObjectID `bson:"_id,omitempty" json:"-"`
 	Type        string             `bson:"type" json:"type"`
 	AuthorID    primitive.ObjectID `bson:"author_id" json:"author_id"`
 	Compnay     ExpCompany         `bson:"company" json:"company"`

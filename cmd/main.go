@@ -24,10 +24,10 @@ func main() {
 	db, err := mongo.New()
 	repository := &dto.Repository{DB: db}
 
-	_, err = es.New()
+	elasticsearch, err := es.New()
 	if err != nil {
 		logger.Logger.Fatal(err)
 	}
 
-	server.Load(repository)
+	server.Load(repository, elasticsearch)
 }
