@@ -4,6 +4,7 @@ import (
 	"context"
 	"time"
 
+	"github.com/sirupsen/logrus"
 	"github.com/wendellliu/good-search/pkg/common/dbAdapter"
 	"github.com/wendellliu/good-search/pkg/logger"
 	"go.mongodb.org/mongo-driver/bson/primitive"
@@ -30,8 +31,8 @@ type ExpSection struct {
 }
 
 type InterviewTime struct {
-	Year  string `bson:"year" json:"year"`
-	Month string `bson:"month" json:"month"`
+	Year  int64 `bson:"year" json:"year"`
+	Month int64 `bson:"month" json:"month"`
 }
 
 type InterviewQA struct {
@@ -97,6 +98,9 @@ type ExperienceDTO interface {
 }
 
 func (repo Repository) GetExperience(ctx context.Context, id string) (Experience, error) {
+	localLogger := logger.Logger.WithFields(
+		logrus.Fields{"endpoint": "dto-experience-GetExperience"},
+	)
 	collectionName := "experiences"
 	result := Experience{}
 	var err error
@@ -110,7 +114,7 @@ func (repo Repository) GetExperience(ctx context.Context, id string) (Experience
 	)
 
 	if err != nil {
-		logger.Logger.Error(err)
+		localLogger.Error(err)
 	}
 
 	return result, err
@@ -122,6 +126,9 @@ func (repo Repository) GetExperiences(
 	params *ExperiencesParams,
 	opts dbAdapter.Options,
 ) ([]Experience, error) {
+	localLogger := logger.Logger.WithFields(
+		logrus.Fields{"endpoint": "dto-experience-GetExperiences"},
+	)
 	collectionName := "experiences"
 	results := []Experience{}
 
@@ -139,7 +146,7 @@ func (repo Repository) GetExperiences(
 	)
 
 	if err != nil {
-		logger.Logger.Error(err)
+		localLogger.Error(err)
 	}
 
 	return results, err

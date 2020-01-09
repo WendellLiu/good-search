@@ -59,7 +59,9 @@ func (collection *MongoCollection) QueryPagination(
 	opts dbAdapter.Options,
 	results interface{},
 ) error {
-	var err error
+	//localLogger := logger.Logger.WithFields(
+	//logrus.Fields{"endpoint": "mongo-QueryPagination"},
+	//)
 	query := bson.M{}
 
 	options := options.Find()
@@ -70,7 +72,11 @@ func (collection *MongoCollection) QueryPagination(
 
 	}
 	var defaultID primitive.ObjectID
-	cursorID, err := primitive.ObjectIDFromHex(opts.CursorID)
+	cursorID, encodeError := primitive.ObjectIDFromHex(opts.CursorID)
+
+	if encodeError != nil {
+		return fmt.Errorf("%s - id: %+v", encodeError, opts.CursorID)
+	}
 
 	if cursorID != defaultID {
 		query["_id"] = bson.M{
@@ -84,14 +90,24 @@ func (collection *MongoCollection) QueryPagination(
 		}
 	}
 
-	cur, err := collection.collection.Find(
+	//localLogger.Infof("query: %+v \n", query)
+	//localLogger.Infof("options: %+v \n", options)
+
+	cur, cursorBuildingError := collection.collection.Find(
 		context.Background(),
 		query,
 		options,
 	)
+
+	if cursorBuildingError != nil {
+		return fmt.Errorf("cursor building error: %s", cursorBuildingError)
+	}
 	defer cur.Close(context.Background())
 
-	err = cur.All(context.Background(), results)
+	cursorRunErr := cur.All(context.Background(), results)
 
-	return err
+	if cursorRunErr != nil {
+		return fmt.Errorf("collection cursor run error: %s", cursorRunErr)
+	}
+	return nil
 }

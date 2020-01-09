@@ -2,7 +2,6 @@ package handlers
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/sirupsen/logrus"
 	"github.com/wendellliu/good-search/pkg/logger"
@@ -10,15 +9,18 @@ import (
 )
 
 func (s *Server) UpdateExperience(ctx context.Context, req *pb.UpdateExperienceReq) (*pb.UpdateExperienceResp, error) {
+	localLogger := logger.Logger.WithFields(
+		logrus.Fields{"endpoint": "UpdateExperience"},
+	)
 	experience, err := s.Repository.GetExperience(context.Background(), req.Id)
 
-	err = s.Es.IndexExperience(context.Background(), experience)
+	err = s.Es.IndexExperience(ctx, experience)
 
 	if err != nil {
 		logger.Logger.Error(err)
 	}
 
-	logger.Logger.WithFields(logrus.Fields{"experience": fmt.Sprintf("%+v", experience)}).Info("get result")
+	localLogger.Infof("index result to es: %+v", experience)
 	return &pb.UpdateExperienceResp{
 		Status: pb.Status_SUCCESS,
 		Experience: &pb.ExperiencePayload{

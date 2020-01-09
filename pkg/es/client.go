@@ -8,6 +8,7 @@ import (
 
 	elasticsearch "github.com/elastic/go-elasticsearch/v7"
 	"github.com/elastic/go-elasticsearch/v7/esapi"
+	"github.com/sirupsen/logrus"
 	"github.com/wendellliu/good-search/pkg/config"
 	"github.com/wendellliu/good-search/pkg/dto"
 	"github.com/wendellliu/good-search/pkg/logger"
@@ -35,13 +36,16 @@ func New() (Elasticsearch, error) {
 const EXPERIENCE_INDEX = "goodjob-experience"
 
 func (es *Elasticsearch) IndexExperience(ctx context.Context, experience dto.Experience) error {
+	localLogger := logger.Logger.WithFields(
+		logrus.Fields{"endpoint": "es-IndexExperience"},
+	)
 	var err error
 
 	id := experience.ID.Hex()
 
 	b, err := json.Marshal(experience)
 	if err != nil {
-		logger.Logger.Error(err)
+		localLogger.Error(err)
 	}
 	req := esapi.IndexRequest{
 		Index:      EXPERIENCE_INDEX,
@@ -54,7 +58,6 @@ func (es *Elasticsearch) IndexExperience(ctx context.Context, experience dto.Exp
 	if err != nil {
 		return err
 	}
-	logger.Logger.Infof("index the experience id of %s", id)
 	defer res.Body.Close()
 
 	return err
