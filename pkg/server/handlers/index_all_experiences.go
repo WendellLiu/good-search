@@ -2,6 +2,8 @@ package handlers
 
 import (
 	"context"
+	"math"
+	"sync"
 
 	"github.com/sirupsen/logrus"
 	"github.com/wendellliu/good-search/pkg/common/dbAdapter"
@@ -11,53 +13,88 @@ import (
 	"go.mongodb.org/mongo-driver/bson/primitive"
 )
 
+func (s *Server) indexToES(ctx context.Context, experiences []dto.Experience) (err error) {
+	for _, experience := range experiences {
+		err = s.Es.IndexExperience(ctx, experience)
+		if err != nil {
+			break
+		}
+	}
+	return err
+}
+
 func (s *Server) IndexAllExperiences(ctx context.Context, req *pb.IndexAllExperiencesReq) (*pb.IndexAllExperiencesResp, error) {
 	localLogger := logger.Logger.WithFields(
 		logrus.Fields{"endpoint": "IndexAllExperiences"},
 	)
 
-	go func() {
-		offset := int64(2)
-		limitCounter := int64(10)
-		var nilObjectID primitive.ObjectID
-		currentCursor := nilObjectID.Hex()
+	workerNum := 10
+	offset := int64(5)
+	count, err := s.Repository.GetExperiencesCount(ctx)
+	if err != nil {
+		localLogger.Error(err)
+		return &pb.IndexAllExperiencesResp{
+			Status: pb.Status_FAILURE,
+		}, nil
+	}
+	var nilObjectID primitive.ObjectID
+	firstID := nilObjectID.Hex()
 
-		for limitCounter > 0 {
-			experiences, err := s.Repository.GetExperiences(
-				ctx,
-				&dto.ExperiencesParams{},
-				dbAdapter.Options{
-					Limit:    offset,
-					CursorID: currentCursor,
-				},
-			)
+	bufferCount := int(math.Ceil(float64(count) / float64(offset)))
+	lookupIds := make(chan string, bufferCount)
 
-			if err != nil {
-				localLogger.Error(err)
+	var wg sync.WaitGroup
 
-				break
-			}
+	// for dev
+	counter := 5
 
-			for _, experience := range experiences {
-				err = s.Es.IndexExperience(ctx, experience)
+	lookupIds <- firstID
+	for i := 0; i < workerNum; i++ {
+		localLogger.Infof("worker: %d", i)
+		wg.Add(1)
+		go func(candidateIds chan string) {
+			for id := range candidateIds {
+				localLogger.Infof("id: %s", id)
+				// for dev
+				//counter--
+
+				experiences, err := s.Repository.GetExperiences(
+					ctx,
+					&dto.ExperiencesParams{},
+					dbAdapter.Options{
+						Limit:    offset,
+						CursorID: id,
+					},
+				)
 				if err != nil {
 					localLogger.Error(err)
 					break
 				}
-				localLogger.Infof("index experience id: %+v", experience.ID)
-				currentCursor = experience.ID.Hex()
+
+				lenExps := len(experiences)
+
+				if counter <= 0 || lenExps < 1 {
+					close(candidateIds)
+					localLogger.Infof("over and return")
+					break
+				}
+
+				lastExp := experiences[lenExps-1]
+				lastCursor := lastExp.ID.Hex()
+
+				candidateIds <- lastCursor
+				err = s.indexToES(ctx, experiences)
+
+				if err != nil {
+					localLogger.Error(err)
+				}
+				localLogger.Infof("index experiences start with : %s(offset: %d)", id, offset)
 			}
+			//wg.Done()
+		}(lookupIds)
+	}
 
-			if err != nil {
-				localLogger.Error(err)
-
-				break
-			}
-
-			//post-process
-			limitCounter = limitCounter - offset
-		}
-	}()
+	wg.Wait()
 
 	return &pb.IndexAllExperiencesResp{
 		Status: pb.Status_SUCCESS,

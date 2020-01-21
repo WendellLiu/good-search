@@ -59,9 +59,7 @@ func (collection *MongoCollection) QueryPagination(
 	opts dbAdapter.Options,
 	results interface{},
 ) error {
-	//localLogger := logger.Logger.WithFields(
-	//logrus.Fields{"endpoint": "mongo-QueryPagination"},
-	//)
+	collectionName := collection.collection.Name()
 	query := bson.M{}
 
 	options := options.Find()
@@ -90,9 +88,6 @@ func (collection *MongoCollection) QueryPagination(
 		}
 	}
 
-	//localLogger.Infof("query: %+v \n", query)
-	//localLogger.Infof("options: %+v \n", options)
-
 	cur, cursorBuildingError := collection.collection.Find(
 		context.Background(),
 		query,
@@ -100,14 +95,26 @@ func (collection *MongoCollection) QueryPagination(
 	)
 
 	if cursorBuildingError != nil {
-		return fmt.Errorf("cursor building error: %s", cursorBuildingError)
+		return fmt.Errorf("collection: %s, cursor building error: %s", collectionName, cursorBuildingError)
 	}
 	defer cur.Close(context.Background())
 
 	cursorRunErr := cur.All(context.Background(), results)
 
 	if cursorRunErr != nil {
-		return fmt.Errorf("collection cursor run error: %s", cursorRunErr)
+		return fmt.Errorf("collection: %s, cursor: %s, collection cursor run error: %s", collectionName, opts.CursorID, cursorRunErr)
 	}
 	return nil
+}
+
+func (collection *MongoCollection) AllCount(ctx context.Context) (count int64, err error) {
+	count, err = collection.collection.EstimatedDocumentCount(ctx)
+	if err != nil {
+		return 0, fmt.Errorf(
+			"collection %s count error %s",
+			collection.collection.Name(),
+			err,
+		)
+	}
+	return count, nil
 }
