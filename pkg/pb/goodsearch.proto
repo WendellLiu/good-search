@@ -6,6 +6,7 @@ service GoodSearch{
   rpc GetExperience (GetExperienceReq) returns (GetExperienceResp);
   rpc UpdateExperience (UpdateExperienceReq) returns (UpdateExperienceResp);
   rpc IndexAllExperiences (IndexAllExperiencesReq) returns (IndexAllExperiencesResp);
+  rpc SearchExperiences(SearchExperiencesReq) returns (SearchExperiencesResp);
 }
 
 message GetExperienceReq {
@@ -39,4 +40,13 @@ message IndexAllExperiencesReq {}
 
 message IndexAllExperiencesResp {
   Status status = 1;
+}
+
+message SearchExperiencesReq {
+  string keyword = 1;
+}
+
+message SearchExperiencesResp {
+  Status status = 1;
+  repeated string experience_ids = 2;
 }
