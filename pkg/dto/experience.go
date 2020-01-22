@@ -41,8 +41,10 @@ type InterviewQA struct {
 }
 
 type Salary struct {
-	Type   string `bson:"type" json:"type"`
-	Amount int64  `bson:"amount" json:"amount"`
+	Type string `bson:"type" json:"type"`
+	// why do I set this field to float64
+	// since some entities' salary amount would overflow(data issue)
+	Amount float64 `bson:"amount" json:"amount"`
 }
 
 type Archive struct {

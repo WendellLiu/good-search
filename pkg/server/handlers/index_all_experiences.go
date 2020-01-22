@@ -44,9 +44,12 @@ func (s *Server) IndexAllExperiences(ctx context.Context, req *pb.IndexAllExperi
 	lookupIds := make(chan string, bufferCount)
 
 	var wg sync.WaitGroup
+	var mux sync.Mutex
+
+	counter := 0
 
 	// for dev
-	counter := 5
+	devCounter := 5
 
 	lookupIds <- firstID
 	for i := 0; i < workerNum; i++ {
@@ -56,7 +59,7 @@ func (s *Server) IndexAllExperiences(ctx context.Context, req *pb.IndexAllExperi
 			for id := range candidateIds {
 				localLogger.Infof("id: %s", id)
 				// for dev
-				//counter--
+				// devCounter--
 
 				experiences, err := s.Repository.GetExperiences(
 					ctx,
@@ -73,7 +76,7 @@ func (s *Server) IndexAllExperiences(ctx context.Context, req *pb.IndexAllExperi
 
 				lenExps := len(experiences)
 
-				if counter <= 0 || lenExps < 1 {
+				if devCounter <= 0 || lenExps < 1 {
 					close(candidateIds)
 					localLogger.Infof("over and return")
 					break
@@ -88,13 +91,19 @@ func (s *Server) IndexAllExperiences(ctx context.Context, req *pb.IndexAllExperi
 				if err != nil {
 					localLogger.Error(err)
 				}
+				mux.Lock()
+				counter = counter + len(experiences)
+				mux.Unlock()
+
 				localLogger.Infof("index experiences start with : %s(offset: %d)", id, offset)
 			}
-			//wg.Done()
+			wg.Done()
 		}(lookupIds)
 	}
 
 	wg.Wait()
+
+	localLogger.Infof("index %d documents", counter)
 
 	return &pb.IndexAllExperiencesResp{
 		Status: pb.Status_SUCCESS,
