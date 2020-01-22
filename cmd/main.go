@@ -18,8 +18,8 @@ func main() {
 		logger.Logger.Fatal("Error loading .env file")
 	}
 
-	config.Load()
 	logger.Load()
+	config.Load()
 
 	db, err := mongo.New()
 	repository := &dto.Repository{DB: db}

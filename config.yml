@@ -1,0 +1,12 @@
+search:
+  experiences_search:
+    fields:
+      - title^2
+      - job_title^2
+      - company.name
+      - sections.subtitle
+      - sections.content
+      - interview_qas.question
+      - interview_qas.answer
+
+  
