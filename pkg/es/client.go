@@ -5,6 +5,7 @@ import (
 	"context"
 	"encoding/json"
 	"errors"
+	"io/ioutil"
 
 	elasticsearch "github.com/elastic/go-elasticsearch/v7"
 	"github.com/elastic/go-elasticsearch/v7/esapi"
@@ -63,6 +64,25 @@ func (es *Elasticsearch) IndexExperience(ctx context.Context, experience dto.Exp
 	return err
 }
 
+type Hit struct {
+	ID     string `json:"_id"`
+	Score  string `json:"_score"`
+	Source struct {
+		Title string `json:"title"`
+	} `json:"_source"`
+}
+
+type Hits struct {
+	Total struct {
+		Value int64 `json:"value"`
+	} `json:"total"`
+	Hits []Hit `json:"hits"`
+}
+
+type SearchBody struct {
+	Hits Hits `json:"hits"`
+}
+
 func (es *Elasticsearch) SearchExperiences(ctx context.Context, keyword string) (
 	experienceIds []string,
 	err error,
@@ -94,6 +114,13 @@ func (es *Elasticsearch) SearchExperiences(ctx context.Context, keyword string) 
 
 	res, err := req.Do(ctx, client)
 
-	localLogger.Infof("res: %+v \n", res)
-	return []string{"123", "321"}, nil
+	bodyBytes, err := ioutil.ReadAll(res.Body)
+
+	var body SearchBody
+	json.Unmarshal(bodyBytes, &body)
+
+	for _, h := range body.Hits.Hits {
+		experienceIds = append(experienceIds, h.ID)
+	}
+	return experienceIds, nil
 }

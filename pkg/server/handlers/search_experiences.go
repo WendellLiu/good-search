@@ -7,12 +7,16 @@ import (
 )
 
 func (s *Server) SearchExperiences(ctx context.Context, req *pb.SearchExperiencesReq) (*pb.SearchExperiencesResp, error) {
-	s.Es.SearchExperiences(ctx, req.Keyword)
+	experienceIds, err := s.Es.SearchExperiences(ctx, req.Keyword)
+
+	if err != nil {
+		return &pb.SearchExperiencesResp{
+			Status: pb.Status_FAILURE,
+		}, err
+	}
+
 	return &pb.SearchExperiencesResp{
-		Status: pb.Status_SUCCESS,
-		ExperienceIds: []string{
-			"123",
-			"321",
-		},
+		Status:        pb.Status_SUCCESS,
+		ExperienceIds: experienceIds,
 	}, nil
 }
