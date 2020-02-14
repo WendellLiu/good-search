@@ -49,7 +49,7 @@ func (s *Server) IndexAllExperiences(ctx context.Context, req *pb.IndexAllExperi
 	counter := 0
 
 	// for dev
-	devCounter := 5
+	devCounter := 2000
 
 	lookupIds <- firstID
 	for i := 0; i < workerNum; i++ {
@@ -59,7 +59,9 @@ func (s *Server) IndexAllExperiences(ctx context.Context, req *pb.IndexAllExperi
 			for id := range candidateIds {
 				localLogger.Infof("id: %s", id)
 				// for dev
-				// devCounter--
+				mux.Lock()
+				devCounter--
+				mux.Unlock()
 
 				experiences, err := s.Repository.GetExperiences(
 					ctx,

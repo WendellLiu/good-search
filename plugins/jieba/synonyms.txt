@@ -1,0 +1,3 @@
+interview,面試
+work,工作
+experience,經驗
