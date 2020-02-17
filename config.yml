@@ -1,12 +1,13 @@
 search:
   experiences_search:
     fields:
-      - title^2
+      - region^2
+      - title
+      - company.name^2
+      - type^3
       - job_title^2
-      - company.name
-      - sections.subtitle
-      - sections.content
-      - interview_qas.question
-      - interview_qas.answer
+      - sections.subtitle^2
+    analyzer: jieba_index
+    type: most_fields
 
   

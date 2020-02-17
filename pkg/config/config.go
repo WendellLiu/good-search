@@ -27,7 +27,9 @@ type SystemConfig struct {
 }
 
 type ExperiencesSearch struct {
-	Fields []string `yaml:"fields"`
+	Fields   []string `yaml:"fields"`
+	Analyzer string   `yaml:"analyzer"`
+	Type     string   `yaml:"type"`
 }
 
 type SearchConfig struct {

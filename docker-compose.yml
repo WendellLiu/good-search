@@ -1,8 +1,8 @@
 version: '3.3'
 services:
   es:
-    image: docker.elastic.co/elasticsearch/elasticsearch:7.3.0
-    container_name: es01
+    image: docker.pkg.github.com/wendellliu/good-search-images/good-search-es:0.1 
+    container_name: es01-dev
     environment:
       - cluster.name=docker-cluster
       - bootstrap.memory_lock=true
@@ -20,7 +20,6 @@ services:
         hard: -1
     volumes:
       - ./es-data:/usr/share/elasticsearch/data
-      - ./plugins:/usr/share/elasticsearch/plugins
     ports:
       - 9200:9200
       - 9300:9300

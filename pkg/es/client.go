@@ -96,8 +96,10 @@ func (es *Elasticsearch) SearchExperiences(ctx context.Context, keyword string) 
 	query := map[string]interface{}{
 		"query": map[string]interface{}{
 			"multi_match": map[string]interface{}{
-				"query":  keyword,
-				"fields": config.Config.Search.ExperiencesSearch.Fields,
+				"query":    keyword,
+				"fields":   config.Config.Search.ExperiencesSearch.Fields,
+				"analyzer": config.Config.Search.ExperiencesSearch.Analyzer,
+				"type":     config.Config.Search.ExperiencesSearch.Type,
 			},
 		},
 		"_source": []string{"title"},
@@ -122,5 +124,8 @@ func (es *Elasticsearch) SearchExperiences(ctx context.Context, keyword string) 
 	for _, h := range body.Hits.Hits {
 		experienceIds = append(experienceIds, h.ID)
 	}
+
+	localLogger.Infof("query: %+v; result: %+v", query, experienceIds)
+
 	return experienceIds, nil
 }
