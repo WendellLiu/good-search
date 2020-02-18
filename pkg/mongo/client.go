@@ -27,14 +27,15 @@ type MongoCollection struct {
 
 // New mongo db
 func New() (*MongoDB, error) {
-	mongoURI := fmt.Sprintf("mongodb://%s:%s", config.Config.MongoDBHost, config.Config.MongoDBPort)
+	mongoConfig := config.Config.Mongo
+	mongoURI := fmt.Sprintf("mongodb://%s:%s", mongoConfig.Host, mongoConfig.Port)
 	client, err := mongo.Connect(
 		context.Background(),
 		options.Client().ApplyURI(mongoURI),
 	)
 
 	err = client.Ping(context.Background(), nil)
-	conn := client.Database(config.Config.MongoDBName)
+	conn := client.Database(mongoConfig.DBName)
 	return &MongoDB{connection: conn}, err
 
 }

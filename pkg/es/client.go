@@ -20,7 +20,7 @@ type Elasticsearch struct {
 }
 
 func New() (Elasticsearch, error) {
-	esAddress := config.Config.ESAddress
+	esAddress := config.Config.Es.Address
 	cfg := elasticsearch.Config{
 		Addresses: []string{esAddress},
 	}

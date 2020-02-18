@@ -9,5 +9,13 @@ search:
       - sections.subtitle^2
     analyzer: jieba_index
     type: most_fields
+mongo:
+  host: localhost
+  port: 27017
+  password: 12345678
+  db_name: goodjob
+es:
+  address: http://localhost:9200
+grpc:
+  port: 50051
 
-  

@@ -23,7 +23,7 @@ type Dependencies struct {
 }
 
 func Load(dependencies Dependencies) {
-	port := fmt.Sprintf(":%s", config.Config.GRPCPort)
+	port := fmt.Sprintf(":%s", config.Config.Grpc.Port)
 
 	lis, err := net.Listen("tcp", port)
 	if err != nil {

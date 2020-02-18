@@ -2,7 +2,6 @@ package config
 
 import (
 	"io/ioutil"
-	"os"
 
 	"github.com/sirupsen/logrus"
 	"github.com/wendellliu/good-search/pkg/logger"
@@ -14,16 +13,28 @@ var Config BasicConfig
 
 type BasicConfig struct {
 	SystemConfig
-	MongoDBHost     string
-	MongoDBPort     string
-	MongoDBPassword string
-	MongoDBName     string
-	GRPCPort        string
-	ESAddress       string
 }
 
 type SystemConfig struct {
 	Search SearchConfig `yaml:"search"`
+	Mongo  MongoConfig  `yaml:"mongo"`
+	Es     EsConfig     `yaml:"es"`
+	Grpc   GrpcConfig   `yaml:"grpc"`
+}
+
+type MongoConfig struct {
+	Host     string `yaml:"host"`
+	Port     string `yaml:"port"`
+	Password string `yaml:"password"`
+	DBName   string `yaml:"db_name"`
+}
+
+type EsConfig struct {
+	Address string `yaml:"address"`
+}
+
+type GrpcConfig struct {
+	Port string `yaml:"port"`
 }
 
 type ExperiencesSearch struct {
@@ -57,12 +68,6 @@ func readConfigYaml() SystemConfig {
 func Load() {
 	systemConfig := readConfigYaml()
 	Config = BasicConfig{
-		SystemConfig:    systemConfig,
-		MongoDBHost:     os.Getenv("MONGO_DB_HOST"),
-		MongoDBPort:     os.Getenv("MONGO_DB_PORT"),
-		MongoDBPassword: os.Getenv("MONGO_DB_PASSWORD"),
-		MongoDBName:     os.Getenv("MONGO_DB_NAME"),
-		GRPCPort:        os.Getenv("GRPC_PORT"),
-		ESAddress:       os.Getenv("ES_ADDRESS"),
+		SystemConfig: systemConfig,
 	}
 }
