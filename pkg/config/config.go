@@ -9,17 +9,14 @@ import (
 	"gopkg.in/yaml.v3"
 )
 
-var Config BasicConfig
-
-type BasicConfig struct {
-	SystemConfig
-}
+var Config SystemConfig
 
 type SystemConfig struct {
-	Search SearchConfig `yaml:"search"`
-	Mongo  MongoConfig  `yaml:"mongo"`
-	Es     EsConfig     `yaml:"es"`
-	Grpc   GrpcConfig   `yaml:"grpc"`
+	Search   SearchConfig   `yaml:"search"`
+	Mongo    MongoConfig    `yaml:"mongo"`
+	Es       EsConfig       `yaml:"es"`
+	Grpc     GrpcConfig     `yaml:"grpc"`
+	Rabbitmq RabbitmqConfig `yaml:"rabbitmq"`
 }
 
 type MongoConfig struct {
@@ -34,6 +31,10 @@ type EsConfig struct {
 }
 
 type GrpcConfig struct {
+	Port string `yaml:"port"`
+}
+
+type RabbitmqConfig struct {
 	Port string `yaml:"port"`
 }
 
@@ -67,7 +68,5 @@ func readConfigYaml() SystemConfig {
 
 func Load() {
 	systemConfig := readConfigYaml()
-	Config = BasicConfig{
-		SystemConfig: systemConfig,
-	}
+	Config = systemConfig
 }

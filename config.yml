@@ -18,4 +18,6 @@ es:
   address: http://localhost:9200
 grpc:
   port: 50051
-
+rabbitmq:
+  port: 5672
+    

@@ -11,6 +11,7 @@ require (
 	github.com/grpc-ecosystem/go-grpc-middleware v1.1.0
 	github.com/joho/godotenv v1.3.0
 	github.com/sirupsen/logrus v1.4.2
+	github.com/streadway/amqp v0.0.0-20200108173154-1c71cc93ed71
 	github.com/stretchr/testify v1.4.0
 	github.com/xdg/scram v0.0.0-20180814205039-7eeb5667e42c // indirect
 	github.com/xdg/stringprep v1.0.0 // indirect

@@ -9,6 +9,8 @@ import (
 	"github.com/wendellliu/good-search/pkg/dto"
 	"github.com/wendellliu/good-search/pkg/es"
 	"github.com/wendellliu/good-search/pkg/logger"
+	"github.com/wendellliu/good-search/pkg/queue"
+
 	pb "github.com/wendellliu/good-search/pkg/pb"
 	"github.com/wendellliu/good-search/pkg/server/handlers"
 
@@ -18,8 +20,9 @@ import (
 )
 
 type Dependencies struct {
-	Repo dto.DTO
-	Es   es.Elasticsearch
+	Repo  dto.DTO
+	Es    es.Elasticsearch
+	Queue queue.Queue
 }
 
 func Load(dependencies Dependencies) {
