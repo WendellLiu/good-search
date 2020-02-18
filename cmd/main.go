@@ -29,5 +29,8 @@ func main() {
 		logger.Logger.Fatal(err)
 	}
 
-	server.Load(repository, elasticsearch)
+	server.Load(server.Dependencies{
+		Repo: repository,
+		Es:   elasticsearch,
+	})
 }

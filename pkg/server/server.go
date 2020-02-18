@@ -17,7 +17,12 @@ import (
 	"google.golang.org/grpc"
 )
 
-func Load(repo dto.DTO, es es.Elasticsearch) {
+type Dependencies struct {
+	Repo dto.DTO
+	Es   es.Elasticsearch
+}
+
+func Load(dependencies Dependencies) {
 	port := fmt.Sprintf(":%s", config.Config.GRPCPort)
 
 	lis, err := net.Listen("tcp", port)
@@ -31,8 +36,8 @@ func Load(repo dto.DTO, es es.Elasticsearch) {
 		)),
 	)
 	pb.RegisterGoodSearchServer(s, &handlers.Server{
-		Repository: repo,
-		Es:         es,
+		Repository: dependencies.Repo,
+		Es:         dependencies.Es,
 	})
 
 	logger.Logger.Infof("grpc server successfully connect to port %s", port)
