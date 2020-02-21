@@ -5,6 +5,7 @@ import (
 
 	"github.com/streadway/amqp"
 	"github.com/wendellliu/good-search/pkg/config"
+	"github.com/wendellliu/good-search/pkg/queue/consumer"
 )
 
 const (
@@ -23,7 +24,67 @@ func New() (Queue, error) {
 		panic(err)
 	}
 
-	return Queue{
+	qu := Queue{
 		Conn: conn,
-	}, nil
+	}
+
+	// register consumer
+	registerUpdateConsumer(&qu)
+
+	return qu, nil
+}
+
+func (q *Queue) NewChannel() (*amqp.Channel, error) {
+	channel, err := q.Conn.Channel()
+
+	if err != nil {
+		return nil, err
+	}
+
+	return channel, nil
+}
+
+func registerUpdateConsumer(qu *Queue) error {
+	ch, err := qu.NewChannel()
+
+	if err != nil {
+		return err
+	}
+
+	q, err := ch.QueueDeclare(
+		UPDATE_EXPERIENCE_QUEUE, // name
+		false,                   // durable
+		false,                   // delete when unused
+		false,                   // exclusive
+		false,                   // no-wait
+		nil,                     // arguments
+	)
+
+	if err != nil {
+		return err
+	}
+
+	msgs, err := ch.Consume(
+		q.Name, // queue
+		"",     // consumer
+		false,  // auto-ack
+		false,  // exclusive
+		false,  // no-local
+		false,  // no-wait
+		nil,    // args
+
+	)
+
+	if err != nil {
+		return err
+	}
+
+	go func() {
+		for d := range msgs {
+			consumer.UpdateExperienceConsumer(&d)
+		}
+
+	}()
+
+	return nil
 }

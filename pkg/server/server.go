@@ -41,6 +41,7 @@ func Load(dependencies Dependencies) {
 	pb.RegisterGoodSearchServer(s, &handlers.Server{
 		Repository: dependencies.Repo,
 		Es:         dependencies.Es,
+		Queue:      dependencies.Queue,
 	})
 
 	logger.Logger.Infof("grpc server successfully connect to port %s", port)

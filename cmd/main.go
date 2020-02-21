@@ -28,4 +28,6 @@ func main() {
 		Es:    elasticsearch,
 		Queue: queue,
 	})
+
+	queue.Conn.Close()
 }
