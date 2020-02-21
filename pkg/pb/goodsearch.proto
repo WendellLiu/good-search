@@ -3,11 +3,19 @@ syntax = "proto3";
 package goodsearch;
 
 service GoodSearch{
+  rpc Dumb (DumbReq) returns (DumbResp);
   rpc GetExperience (GetExperienceReq) returns (GetExperienceResp);
   rpc UpdateExperience (UpdateExperienceReq) returns (UpdateExperienceResp);
   rpc IndexAllExperiences (IndexAllExperiencesReq) returns (IndexAllExperiencesResp);
   rpc SearchExperiences(SearchExperiencesReq) returns (SearchExperiencesResp);
 }
+
+message DumbReq{}
+
+message DumbResp {
+  Status status = 1;
+}
+
 
 message GetExperienceReq {
   string id = 1;

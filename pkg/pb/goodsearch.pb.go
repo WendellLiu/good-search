@@ -49,6 +49,76 @@ func (Status) EnumDescriptor() ([]byte, []int) {
 	return fileDescriptor_a44eebf31dd75a2c, []int{0}
 }
 
+type DumbReq struct {
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *DumbReq) Reset()         { *m = DumbReq{} }
+func (m *DumbReq) String() string { return proto.CompactTextString(m) }
+func (*DumbReq) ProtoMessage()    {}
+func (*DumbReq) Descriptor() ([]byte, []int) {
+	return fileDescriptor_a44eebf31dd75a2c, []int{0}
+}
+
+func (m *DumbReq) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_DumbReq.Unmarshal(m, b)
+}
+func (m *DumbReq) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_DumbReq.Marshal(b, m, deterministic)
+}
+func (m *DumbReq) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DumbReq.Merge(m, src)
+}
+func (m *DumbReq) XXX_Size() int {
+	return xxx_messageInfo_DumbReq.Size(m)
+}
+func (m *DumbReq) XXX_DiscardUnknown() {
+	xxx_messageInfo_DumbReq.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_DumbReq proto.InternalMessageInfo
+
+type DumbResp struct {
+	Status               Status   `protobuf:"varint,1,opt,name=status,proto3,enum=goodsearch.Status" json:"status,omitempty"`
+	XXX_NoUnkeyedLiteral struct{} `json:"-"`
+	XXX_unrecognized     []byte   `json:"-"`
+	XXX_sizecache        int32    `json:"-"`
+}
+
+func (m *DumbResp) Reset()         { *m = DumbResp{} }
+func (m *DumbResp) String() string { return proto.CompactTextString(m) }
+func (*DumbResp) ProtoMessage()    {}
+func (*DumbResp) Descriptor() ([]byte, []int) {
+	return fileDescriptor_a44eebf31dd75a2c, []int{1}
+}
+
+func (m *DumbResp) XXX_Unmarshal(b []byte) error {
+	return xxx_messageInfo_DumbResp.Unmarshal(m, b)
+}
+func (m *DumbResp) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	return xxx_messageInfo_DumbResp.Marshal(b, m, deterministic)
+}
+func (m *DumbResp) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_DumbResp.Merge(m, src)
+}
+func (m *DumbResp) XXX_Size() int {
+	return xxx_messageInfo_DumbResp.Size(m)
+}
+func (m *DumbResp) XXX_DiscardUnknown() {
+	xxx_messageInfo_DumbResp.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_DumbResp proto.InternalMessageInfo
+
+func (m *DumbResp) GetStatus() Status {
+	if m != nil {
+		return m.Status
+	}
+	return Status_SUCCESS
+}
+
 type GetExperienceReq struct {
 	Id                   string   `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	XXX_NoUnkeyedLiteral struct{} `json:"-"`
@@ -60,7 +130,7 @@ func (m *GetExperienceReq) Reset()         { *m = GetExperienceReq{} }
 func (m *GetExperienceReq) String() string { return proto.CompactTextString(m) }
 func (*GetExperienceReq) ProtoMessage()    {}
 func (*GetExperienceReq) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a44eebf31dd75a2c, []int{0}
+	return fileDescriptor_a44eebf31dd75a2c, []int{2}
 }
 
 func (m *GetExperienceReq) XXX_Unmarshal(b []byte) error {
@@ -100,7 +170,7 @@ func (m *GetExperienceResp) Reset()         { *m = GetExperienceResp{} }
 func (m *GetExperienceResp) String() string { return proto.CompactTextString(m) }
 func (*GetExperienceResp) ProtoMessage()    {}
 func (*GetExperienceResp) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a44eebf31dd75a2c, []int{1}
+	return fileDescriptor_a44eebf31dd75a2c, []int{3}
 }
 
 func (m *GetExperienceResp) XXX_Unmarshal(b []byte) error {
@@ -146,7 +216,7 @@ func (m *UpdateExperienceReq) Reset()         { *m = UpdateExperienceReq{} }
 func (m *UpdateExperienceReq) String() string { return proto.CompactTextString(m) }
 func (*UpdateExperienceReq) ProtoMessage()    {}
 func (*UpdateExperienceReq) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a44eebf31dd75a2c, []int{2}
+	return fileDescriptor_a44eebf31dd75a2c, []int{4}
 }
 
 func (m *UpdateExperienceReq) XXX_Unmarshal(b []byte) error {
@@ -186,7 +256,7 @@ func (m *UpdateExperienceResp) Reset()         { *m = UpdateExperienceResp{} }
 func (m *UpdateExperienceResp) String() string { return proto.CompactTextString(m) }
 func (*UpdateExperienceResp) ProtoMessage()    {}
 func (*UpdateExperienceResp) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a44eebf31dd75a2c, []int{3}
+	return fileDescriptor_a44eebf31dd75a2c, []int{5}
 }
 
 func (m *UpdateExperienceResp) XXX_Unmarshal(b []byte) error {
@@ -232,7 +302,7 @@ func (m *ExperiencePayload) Reset()         { *m = ExperiencePayload{} }
 func (m *ExperiencePayload) String() string { return proto.CompactTextString(m) }
 func (*ExperiencePayload) ProtoMessage()    {}
 func (*ExperiencePayload) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a44eebf31dd75a2c, []int{4}
+	return fileDescriptor_a44eebf31dd75a2c, []int{6}
 }
 
 func (m *ExperiencePayload) XXX_Unmarshal(b []byte) error {
@@ -270,7 +340,7 @@ func (m *IndexAllExperiencesReq) Reset()         { *m = IndexAllExperiencesReq{}
 func (m *IndexAllExperiencesReq) String() string { return proto.CompactTextString(m) }
 func (*IndexAllExperiencesReq) ProtoMessage()    {}
 func (*IndexAllExperiencesReq) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a44eebf31dd75a2c, []int{5}
+	return fileDescriptor_a44eebf31dd75a2c, []int{7}
 }
 
 func (m *IndexAllExperiencesReq) XXX_Unmarshal(b []byte) error {
@@ -302,7 +372,7 @@ func (m *IndexAllExperiencesResp) Reset()         { *m = IndexAllExperiencesResp
 func (m *IndexAllExperiencesResp) String() string { return proto.CompactTextString(m) }
 func (*IndexAllExperiencesResp) ProtoMessage()    {}
 func (*IndexAllExperiencesResp) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a44eebf31dd75a2c, []int{6}
+	return fileDescriptor_a44eebf31dd75a2c, []int{8}
 }
 
 func (m *IndexAllExperiencesResp) XXX_Unmarshal(b []byte) error {
@@ -341,7 +411,7 @@ func (m *SearchExperiencesReq) Reset()         { *m = SearchExperiencesReq{} }
 func (m *SearchExperiencesReq) String() string { return proto.CompactTextString(m) }
 func (*SearchExperiencesReq) ProtoMessage()    {}
 func (*SearchExperiencesReq) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a44eebf31dd75a2c, []int{7}
+	return fileDescriptor_a44eebf31dd75a2c, []int{9}
 }
 
 func (m *SearchExperiencesReq) XXX_Unmarshal(b []byte) error {
@@ -381,7 +451,7 @@ func (m *SearchExperiencesResp) Reset()         { *m = SearchExperiencesResp{} }
 func (m *SearchExperiencesResp) String() string { return proto.CompactTextString(m) }
 func (*SearchExperiencesResp) ProtoMessage()    {}
 func (*SearchExperiencesResp) Descriptor() ([]byte, []int) {
-	return fileDescriptor_a44eebf31dd75a2c, []int{8}
+	return fileDescriptor_a44eebf31dd75a2c, []int{10}
 }
 
 func (m *SearchExperiencesResp) XXX_Unmarshal(b []byte) error {
@@ -418,6 +488,8 @@ func (m *SearchExperiencesResp) GetExperienceIds() []string {
 
 func init() {
 	proto.RegisterEnum("goodsearch.Status", Status_name, Status_value)
+	proto.RegisterType((*DumbReq)(nil), "goodsearch.DumbReq")
+	proto.RegisterType((*DumbResp)(nil), "goodsearch.DumbResp")
 	proto.RegisterType((*GetExperienceReq)(nil), "goodsearch.GetExperienceReq")
 	proto.RegisterType((*GetExperienceResp)(nil), "goodsearch.GetExperienceResp")
 	proto.RegisterType((*UpdateExperienceReq)(nil), "goodsearch.UpdateExperienceReq")
@@ -432,31 +504,33 @@ func init() {
 func init() { proto.RegisterFile("goodsearch.proto", fileDescriptor_a44eebf31dd75a2c) }
 
 var fileDescriptor_a44eebf31dd75a2c = []byte{
-	// 378 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x93, 0xcf, 0x6b, 0xea, 0x40,
-	0x10, 0xc7, 0x5f, 0xf2, 0x1e, 0x8a, 0x23, 0x4a, 0x1c, 0x7d, 0x6d, 0x08, 0x95, 0xda, 0x2d, 0x52,
-	0xf1, 0x20, 0xc5, 0x1e, 0x7a, 0xea, 0x41, 0x24, 0x15, 0xc1, 0x43, 0x49, 0x08, 0xf4, 0xd4, 0x92,
-	0xba, 0x4b, 0x9b, 0x56, 0xdc, 0x35, 0x9b, 0x52, 0x3d, 0xf6, 0xef, 0xed, 0x3f, 0x51, 0x1a, 0xab,
-	0x59, 0x63, 0x50, 0xbc, 0x65, 0x67, 0x3e, 0xdf, 0x61, 0x7e, 0x7c, 0x03, 0xc6, 0x33, 0xe7, 0x54,
-	0x32, 0x3f, 0x1c, 0xbf, 0x74, 0x44, 0xc8, 0x23, 0x8e, 0x90, 0x44, 0x08, 0x01, 0x63, 0xc0, 0x22,
-	0x7b, 0x2e, 0x58, 0x18, 0xb0, 0xe9, 0x98, 0x39, 0x6c, 0x86, 0x65, 0xd0, 0x03, 0x6a, 0x6a, 0x0d,
-	0xad, 0x55, 0x70, 0xf4, 0x80, 0x92, 0x6b, 0xa8, 0xa4, 0x18, 0x29, 0xd2, 0x10, 0x22, 0xfc, 0x8b,
-	0x16, 0x82, 0x99, 0x7a, 0x1c, 0x89, 0xbf, 0x49, 0x13, 0xaa, 0x9e, 0xa0, 0x7e, 0xc4, 0x76, 0xd7,
-	0xff, 0xd4, 0xa0, 0xb6, 0xcd, 0x49, 0x81, 0x6d, 0xc8, 0xc9, 0xc8, 0x8f, 0xde, 0x65, 0x0c, 0x97,
-	0xbb, 0xd8, 0x51, 0x66, 0x71, 0xe3, 0x8c, 0xf3, 0x4b, 0xe0, 0x0d, 0x00, 0x5b, 0xab, 0xe3, 0x2e,
-	0x8a, 0xdd, 0xba, 0xca, 0x27, 0xb5, 0xef, 0xfc, 0xc5, 0x84, 0xfb, 0xd4, 0x51, 0x04, 0xe4, 0x02,
-	0x2a, 0x5b, 0xc0, 0x7a, 0x26, 0x4d, 0x99, 0xc9, 0x84, 0xa3, 0xe1, 0x94, 0xb2, 0x79, 0x6f, 0x32,
-	0x49, 0x04, 0xd2, 0x61, 0x33, 0x62, 0xc3, 0x71, 0x66, 0xe6, 0xb0, 0x41, 0xc8, 0x25, 0xd4, 0xdc,
-	0x38, 0xb1, 0x59, 0x1e, 0x4d, 0xc8, 0xbf, 0xb1, 0xc5, 0x07, 0x0f, 0x57, 0xab, 0x5b, 0x3d, 0xc9,
-	0x2b, 0xfc, 0xcf, 0x50, 0x1c, 0xb8, 0xbf, 0x26, 0x94, 0x93, 0x75, 0x3c, 0x06, 0x54, 0x9a, 0x7a,
-	0xe3, 0x6f, 0xab, 0xe0, 0x94, 0x92, 0xe8, 0x90, 0xca, 0x36, 0x81, 0xdc, 0x52, 0x88, 0x45, 0xc8,
-	0xbb, 0x5e, 0xbf, 0x6f, 0xbb, 0xae, 0xf1, 0xe7, 0xe7, 0x71, 0xdb, 0x1b, 0x8e, 0x3c, 0xc7, 0x36,
-	0xb4, 0xee, 0x97, 0x0e, 0x30, 0xe0, 0x9c, 0x2e, 0x9b, 0xc2, 0x11, 0x94, 0x36, 0xec, 0x83, 0x27,
-	0x6a, 0x1b, 0x69, 0xf7, 0x59, 0xf5, 0x1d, 0x59, 0x29, 0xd0, 0x03, 0x23, 0xed, 0x15, 0x3c, 0x55,
-	0x25, 0x19, 0x8e, 0xb3, 0x1a, 0xbb, 0x01, 0x29, 0xf0, 0x01, 0xaa, 0x19, 0xc7, 0x43, 0xa2, 0x0a,
-	0xb3, 0xef, 0x6e, 0x9d, 0xef, 0x65, 0xa4, 0xc0, 0x7b, 0xa8, 0x6c, 0xdd, 0x08, 0x37, 0xda, 0xca,
-	0x3a, 0xba, 0x75, 0xb6, 0x87, 0x90, 0xe2, 0x29, 0x17, 0xff, 0xd4, 0x57, 0xdf, 0x01, 0x00, 0x00,
-	0xff, 0xff, 0xdf, 0x19, 0x67, 0xb3, 0xe8, 0x03, 0x00, 0x00,
+	// 410 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x94, 0x4d, 0xef, 0xd2, 0x40,
+	0x10, 0xc6, 0x6d, 0x21, 0x20, 0x43, 0x20, 0x65, 0x40, 0x6d, 0x1a, 0x89, 0xb8, 0x86, 0x48, 0x38,
+	0x10, 0xc5, 0x44, 0x4f, 0x1e, 0x08, 0x56, 0x42, 0xc2, 0xc1, 0xb4, 0x69, 0xe2, 0x49, 0x53, 0xd8,
+	0x8d, 0x56, 0x91, 0x5d, 0xba, 0x25, 0xc2, 0xd1, 0x2f, 0xe2, 0x67, 0xfd, 0x87, 0xf2, 0xd2, 0xa5,
+	0x6d, 0x20, 0xdc, 0x76, 0x67, 0x7e, 0xcf, 0x74, 0x67, 0xe6, 0x49, 0xc1, 0xf8, 0xc1, 0x39, 0x95,
+	0xcc, 0x0f, 0x17, 0x3f, 0x07, 0x22, 0xe4, 0x11, 0x47, 0x48, 0x22, 0xa4, 0x02, 0xe5, 0x4f, 0x9b,
+	0x3f, 0x73, 0x87, 0xad, 0xc9, 0x7b, 0x78, 0x7c, 0x38, 0x4a, 0x81, 0x7d, 0x28, 0xc9, 0xc8, 0x8f,
+	0x36, 0xd2, 0xd4, 0x3a, 0x5a, 0xaf, 0x3e, 0xc4, 0x81, 0x52, 0xc5, 0x8d, 0x33, 0xce, 0x91, 0x20,
+	0x04, 0x8c, 0x09, 0x8b, 0xec, 0xad, 0x60, 0x61, 0xc0, 0x56, 0x0b, 0xe6, 0xb0, 0x35, 0xd6, 0x41,
+	0x0f, 0x68, 0xac, 0xad, 0x38, 0x7a, 0x40, 0xc9, 0x07, 0x68, 0xa4, 0x18, 0x29, 0xd2, 0x10, 0x22,
+	0x14, 0xa3, 0x9d, 0x60, 0xa6, 0x1e, 0x47, 0xe2, 0x33, 0xe9, 0x42, 0xd3, 0x13, 0xd4, 0x8f, 0xd8,
+	0xf5, 0xfa, 0xff, 0x34, 0x68, 0x65, 0xb9, 0xfb, 0x1a, 0xc1, 0x8f, 0x00, 0xec, 0xac, 0x8e, 0x5f,
+	0x51, 0x1d, 0xb6, 0x55, 0x3e, 0xa9, 0xfd, 0xc5, 0xdf, 0x2d, 0xb9, 0x4f, 0x1d, 0x45, 0x40, 0x5e,
+	0x43, 0x23, 0x03, 0x9c, 0x7b, 0xd2, 0x94, 0x9e, 0x4c, 0x78, 0x3a, 0x5d, 0x51, 0xb6, 0x1d, 0x2d,
+	0x97, 0x89, 0x40, 0xee, 0x57, 0x60, 0xc3, 0xb3, 0xdc, 0xcc, 0x9d, 0x1b, 0x79, 0x03, 0x2d, 0x37,
+	0x4e, 0x5c, 0x96, 0x47, 0x13, 0xca, 0xbf, 0xd9, 0xee, 0x2f, 0x0f, 0x4f, 0xa3, 0x3b, 0x5d, 0xc9,
+	0x2f, 0x78, 0x92, 0xa3, 0xb8, 0x73, 0x7e, 0x5d, 0xa8, 0x27, 0xe3, 0xf8, 0x1e, 0x50, 0x69, 0xea,
+	0x9d, 0x42, 0xaf, 0xe2, 0xd4, 0x92, 0xe8, 0x94, 0xca, 0x3e, 0x81, 0xd2, 0x41, 0x88, 0x55, 0x28,
+	0xbb, 0xde, 0x78, 0x6c, 0xbb, 0xae, 0xf1, 0x68, 0x7f, 0xf9, 0x3c, 0x9a, 0xce, 0x3c, 0xc7, 0x36,
+	0xb4, 0xe1, 0xff, 0x02, 0xc0, 0x84, 0x73, 0x7a, 0x78, 0x14, 0xbe, 0x85, 0xe2, 0xde, 0x9a, 0xd8,
+	0x54, 0xbf, 0x7e, 0xf4, 0xad, 0xd5, 0xca, 0x06, 0xa5, 0xc0, 0x19, 0xd4, 0x2e, 0x1c, 0x87, 0xcf,
+	0x55, 0x2c, 0x6d, 0x58, 0xab, 0x7d, 0x25, 0x2b, 0x05, 0x7a, 0x60, 0xa4, 0xed, 0x85, 0x2f, 0x54,
+	0x49, 0x8e, 0x49, 0xad, 0xce, 0x75, 0x40, 0x0a, 0xfc, 0x06, 0xcd, 0x9c, 0x7d, 0x23, 0x51, 0x85,
+	0xf9, 0x56, 0xb1, 0x5e, 0xdd, 0x64, 0xa4, 0xc0, 0xaf, 0xd0, 0xc8, 0xac, 0x15, 0x2f, 0x9e, 0x95,
+	0xe7, 0x13, 0xeb, 0xe5, 0x0d, 0x42, 0x8a, 0x79, 0x29, 0xfe, 0x95, 0xbc, 0x7b, 0x08, 0x00, 0x00,
+	0xff, 0xff, 0xa0, 0x33, 0x73, 0x10, 0x5e, 0x04, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -471,6 +545,7 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type GoodSearchClient interface {
+	Dumb(ctx context.Context, in *DumbReq, opts ...grpc.CallOption) (*DumbResp, error)
 	GetExperience(ctx context.Context, in *GetExperienceReq, opts ...grpc.CallOption) (*GetExperienceResp, error)
 	UpdateExperience(ctx context.Context, in *UpdateExperienceReq, opts ...grpc.CallOption) (*UpdateExperienceResp, error)
 	IndexAllExperiences(ctx context.Context, in *IndexAllExperiencesReq, opts ...grpc.CallOption) (*IndexAllExperiencesResp, error)
@@ -483,6 +558,15 @@ type goodSearchClient struct {
 
 func NewGoodSearchClient(cc *grpc.ClientConn) GoodSearchClient {
 	return &goodSearchClient{cc}
+}
+
+func (c *goodSearchClient) Dumb(ctx context.Context, in *DumbReq, opts ...grpc.CallOption) (*DumbResp, error) {
+	out := new(DumbResp)
+	err := c.cc.Invoke(ctx, "/goodsearch.GoodSearch/Dumb", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
 }
 
 func (c *goodSearchClient) GetExperience(ctx context.Context, in *GetExperienceReq, opts ...grpc.CallOption) (*GetExperienceResp, error) {
@@ -523,6 +607,7 @@ func (c *goodSearchClient) SearchExperiences(ctx context.Context, in *SearchExpe
 
 // GoodSearchServer is the server API for GoodSearch service.
 type GoodSearchServer interface {
+	Dumb(context.Context, *DumbReq) (*DumbResp, error)
 	GetExperience(context.Context, *GetExperienceReq) (*GetExperienceResp, error)
 	UpdateExperience(context.Context, *UpdateExperienceReq) (*UpdateExperienceResp, error)
 	IndexAllExperiences(context.Context, *IndexAllExperiencesReq) (*IndexAllExperiencesResp, error)
@@ -533,6 +618,9 @@ type GoodSearchServer interface {
 type UnimplementedGoodSearchServer struct {
 }
 
+func (*UnimplementedGoodSearchServer) Dumb(ctx context.Context, req *DumbReq) (*DumbResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Dumb not implemented")
+}
 func (*UnimplementedGoodSearchServer) GetExperience(ctx context.Context, req *GetExperienceReq) (*GetExperienceResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetExperience not implemented")
 }
@@ -548,6 +636,24 @@ func (*UnimplementedGoodSearchServer) SearchExperiences(ctx context.Context, req
 
 func RegisterGoodSearchServer(s *grpc.Server, srv GoodSearchServer) {
 	s.RegisterService(&_GoodSearch_serviceDesc, srv)
+}
+
+func _GoodSearch_Dumb_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(DumbReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(GoodSearchServer).Dumb(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/goodsearch.GoodSearch/Dumb",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(GoodSearchServer).Dumb(ctx, req.(*DumbReq))
+	}
+	return interceptor(ctx, in, info, handler)
 }
 
 func _GoodSearch_GetExperience_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
@@ -626,6 +732,10 @@ var _GoodSearch_serviceDesc = grpc.ServiceDesc{
 	ServiceName: "goodsearch.GoodSearch",
 	HandlerType: (*GoodSearchServer)(nil),
 	Methods: []grpc.MethodDesc{
+		{
+			MethodName: "Dumb",
+			Handler:    _GoodSearch_Dumb_Handler,
+		},
 		{
 			MethodName: "GetExperience",
 			Handler:    _GoodSearch_GetExperience_Handler,
