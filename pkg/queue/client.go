@@ -16,7 +16,7 @@ type Queue struct {
 	Conn *amqp.Connection
 }
 
-func New() (Queue, error) {
+func New(dependencies *consumer.Dependencies) (Queue, error) {
 	amqpURI := fmt.Sprintf("amqp://guest:guest@localhost:%s/", config.Config.Rabbitmq.Port)
 	conn, err := amqp.Dial(amqpURI)
 
@@ -28,8 +28,8 @@ func New() (Queue, error) {
 		Conn: conn,
 	}
 
-	// register consumer
-	registerUpdateConsumer(&qu)
+	// register consumers
+	registerUpdateExpConsumer(dependencies, &qu)
 
 	return qu, nil
 }
@@ -44,7 +44,7 @@ func (q *Queue) NewChannel() (*amqp.Channel, error) {
 	return channel, nil
 }
 
-func registerUpdateConsumer(qu *Queue) error {
+func registerUpdateExpConsumer(dep *consumer.Dependencies, qu *Queue) error {
 	ch, err := qu.NewChannel()
 
 	if err != nil {
@@ -81,7 +81,7 @@ func registerUpdateConsumer(qu *Queue) error {
 
 	go func() {
 		for d := range msgs {
-			consumer.UpdateExperienceConsumer(&d)
+			consumer.UpdateExperienceConsumer(dep, &d)
 		}
 
 	}()

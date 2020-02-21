@@ -7,6 +7,7 @@ import (
 	"github.com/wendellliu/good-search/pkg/logger"
 	"github.com/wendellliu/good-search/pkg/mongo"
 	"github.com/wendellliu/good-search/pkg/queue"
+	"github.com/wendellliu/good-search/pkg/queue/consumer"
 	"github.com/wendellliu/good-search/pkg/server"
 )
 
@@ -18,7 +19,12 @@ func main() {
 	repository := &dto.Repository{DB: db}
 
 	elasticsearch, err := es.New()
-	queue, err := queue.New()
+
+	queue, err := queue.New(&consumer.Dependencies{
+		Es:   elasticsearch,
+		Repo: repository,
+	})
+
 	if err != nil {
 		logger.Logger.Fatal(err)
 	}
@@ -29,5 +35,5 @@ func main() {
 		Queue: queue,
 	})
 
-	queue.Conn.Close()
+	defer queue.Conn.Close()
 }

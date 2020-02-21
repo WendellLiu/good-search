@@ -32,7 +32,6 @@ message UpdateExperienceReq {
 
 message UpdateExperienceResp {
   Status status = 1; 
-  ExperiencePayload experience = 2;
 }
 
 enum Status {
