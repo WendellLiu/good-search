@@ -12,8 +12,12 @@ import (
 )
 
 func main() {
+	err := config.Load()
 	logger.Load()
-	config.Load()
+
+	if err != nil {
+		logger.Logger.Fatal(err)
+	}
 
 	db, err := mongo.New()
 	repository := &dto.Repository{DB: db}

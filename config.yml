@@ -1,3 +1,4 @@
+development_mode: true
 search:
   experiences_search:
     fields:

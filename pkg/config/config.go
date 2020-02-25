@@ -3,20 +3,18 @@ package config
 import (
 	"io/ioutil"
 
-	"github.com/sirupsen/logrus"
-	"github.com/wendellliu/good-search/pkg/logger"
-
 	"gopkg.in/yaml.v3"
 )
 
 var Config SystemConfig
 
 type SystemConfig struct {
-	Search   SearchConfig   `yaml:"search"`
-	Mongo    MongoConfig    `yaml:"mongo"`
-	Es       EsConfig       `yaml:"es"`
-	Grpc     GrpcConfig     `yaml:"grpc"`
-	Rabbitmq RabbitmqConfig `yaml:"rabbitmq"`
+	DevelopmentMode bool           `yaml:"development_mode"`
+	Search          SearchConfig   `yaml:"search"`
+	Mongo           MongoConfig    `yaml:"mongo"`
+	Es              EsConfig       `yaml:"es"`
+	Grpc            GrpcConfig     `yaml:"grpc"`
+	Rabbitmq        RabbitmqConfig `yaml:"rabbitmq"`
 }
 
 type MongoConfig struct {
@@ -48,25 +46,26 @@ type SearchConfig struct {
 	ExperiencesSearch ExperiencesSearch `yaml:"experiences_search"`
 }
 
-func readConfigYaml() SystemConfig {
-	localLogger := logger.Logger.WithFields(
-		logrus.Fields{"endpoint": "config-readConfigYaml"},
-	)
-
+func readConfigYaml() (systemConfig SystemConfig, err error) {
 	c := SystemConfig{}
 	bytes, err := ioutil.ReadFile("config.yml")
 
 	if err != nil {
-		localLogger.Error("read system config error")
-		return c
+		return c, err
 	}
 
 	yaml.Unmarshal(bytes, &c)
 
-	return c
+	return c, nil
 }
 
-func Load() {
-	systemConfig := readConfigYaml()
+func Load() error {
+	systemConfig, err := readConfigYaml()
+
+	if err != nil {
+		return err
+	}
+
 	Config = systemConfig
+	return nil
 }

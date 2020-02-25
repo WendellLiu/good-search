@@ -3,8 +3,10 @@ package queue
 import (
 	"fmt"
 
+	"github.com/sirupsen/logrus"
 	"github.com/streadway/amqp"
 	"github.com/wendellliu/good-search/pkg/config"
+	"github.com/wendellliu/good-search/pkg/logger"
 	"github.com/wendellliu/good-search/pkg/queue/consumer"
 )
 
@@ -29,7 +31,7 @@ func New(dependencies *consumer.Dependencies) (Queue, error) {
 	}
 
 	// register consumers
-	registerUpdateExpConsumer(dependencies, &qu)
+	registerUpdateExpConsumer(dependencies, 10, &qu)
 
 	return qu, nil
 }
@@ -44,7 +46,11 @@ func (q *Queue) NewChannel() (*amqp.Channel, error) {
 	return channel, nil
 }
 
-func registerUpdateExpConsumer(dep *consumer.Dependencies, qu *Queue) error {
+func registerUpdateExpConsumer(dep *consumer.Dependencies, workerNum int, qu *Queue) error {
+	localLogger := logger.Logger.WithFields(
+		logrus.Fields{"endpoint": "Register UpdateExperienceConsumer"},
+	)
+
 	ch, err := qu.NewChannel()
 
 	if err != nil {
@@ -53,7 +59,7 @@ func registerUpdateExpConsumer(dep *consumer.Dependencies, qu *Queue) error {
 
 	q, err := ch.QueueDeclare(
 		UPDATE_EXPERIENCE_QUEUE, // name
-		false,                   // durable
+		true,                    // durable
 		false,                   // delete when unused
 		false,                   // exclusive
 		false,                   // no-wait
@@ -79,12 +85,16 @@ func registerUpdateExpConsumer(dep *consumer.Dependencies, qu *Queue) error {
 		return err
 	}
 
-	go func() {
-		for d := range msgs {
-			consumer.UpdateExperienceConsumer(dep, &d)
-		}
+	for i := 0; i < workerNum; i++ {
+		localLogger.Infof("update experience worker: %d", i)
+		go func(workerId int, msgCh <-chan amqp.Delivery) {
+			for d := range msgCh {
+				localLogger.Debugf("update experience by worker: %d", workerId)
+				consumer.UpdateExperienceConsumer(dep, &d)
+			}
 
-	}()
+		}(i, msgs)
+	}
 
 	return nil
 }

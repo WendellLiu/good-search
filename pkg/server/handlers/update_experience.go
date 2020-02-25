@@ -27,7 +27,7 @@ func (s *Server) UpdateExperience(ctx context.Context, req *pb.UpdateExperienceR
 
 	q, err := ch.QueueDeclare(
 		queue.UPDATE_EXPERIENCE_QUEUE, // name
-		false,                         // durable
+		true,                          // durable
 		false,                         // delete when unused
 		false,                         // exclusive
 		false,                         // no-wait
@@ -48,8 +48,9 @@ func (s *Server) UpdateExperience(ctx context.Context, req *pb.UpdateExperienceR
 		false,  // mandatory
 		false,  // immediate
 		amqp.Publishing{
-			ContentType: "text/plain",
-			Body:        []byte(body),
+			DeliveryMode: amqp.Persistent,
+			ContentType:  "text/plain",
+			Body:         []byte(body),
 		},
 	)
 

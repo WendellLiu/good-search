@@ -2,7 +2,6 @@ package consumer
 
 import (
 	"context"
-	"fmt"
 
 	"github.com/sirupsen/logrus"
 	"github.com/streadway/amqp"
@@ -20,8 +19,6 @@ func UpdateExperienceConsumer(dep *Dependencies, d *amqp.Delivery) {
 	localLogger := logger.Logger.WithFields(
 		logrus.Fields{"endpoint": "UpdateExperienceConsumer"},
 	)
-
-	fmt.Printf("Received an experience id to be update: %s \n", d.Body)
 
 	experience, err := dep.Repo.GetExperience(context.Background(), string(d.Body))
 
