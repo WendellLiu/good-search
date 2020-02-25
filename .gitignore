@@ -12,6 +12,7 @@
 *.out
 
 es-data/
+rabbitmq-data/
 .env
 
 cmd/main
